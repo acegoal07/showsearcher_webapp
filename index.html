@@ -11,7 +11,9 @@
    <link rel="stylesheet" href="https://acegoal07.dev/assets/css/bootstrap.min.css">
    <script src="https://acegoal07.dev/assets/js/index-min.js" defer></script>
    <link rel="stylesheet" href="https://acegoal07.dev/assets/css/style-min.css">
+   <link rel="stylesheet" href="assets/css/style-min.css">
    <script src="https://acegoal07.dev/assets/js/bootstrap.bundle.min.js" defer></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body class="bg-dark-subtle">
@@ -91,21 +93,56 @@
       <div class="input-group input-group-lg pb-4">
          <input type="text" class="form-control bg-body-tertiary border-0" aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-lg" placeholder="Search" aria-placeholder="Search" id="search-input">
+         <button type="button" class="btn btn-primary bi bi-sliders" data-bs-toggle="modal"
+            data-bs-target="#searchSettings" aria-label="search settings"></button>
       </div>
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center" id="search-results">
+      <div class="modal fade" id="searchSettings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="searchSettingsLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="searchSettingsLabel">Search Settings</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <div class="input-group mb-3">
+                     <label class="input-group-text" for="adult-items-settings">Adult items</label>
+                     <select class="form-select" id="adult-items-settings">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                     </select>
+                  </div>
+                  <div class="input-group mb-3">
+                     <label class="input-group-text" for="movie-or-tv-settings">Movie or TV</label>
+                     <select class="form-select" id="movie-or-tv-settings">
+                        <option value="0" selected>Both</option>
+                        <option value="1">Movie</option>
+                        <option value="2">TV</option>
+                     </select>
+                  </div>
 
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       </div>
+
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
+         id="search-results"></div>
    </main>
 
    <footer class="container mt-3 text-center">
       <hr>
       <a class="btn btn-primary mt-1" href="#">To the top</a>
-      <p class="mt-3">Website built using <a href="https://getbootstrap.com/" class="text-light-emphasis"
+      <p class="mt-3">Website built using <a href="https://getbootstrap.com/" class="text-primary-emphasis"
             target="_blank" rel="noopener">Bootstrap</a>, by acegoal07</p>
    </footer>
 
-   <script src="assets/js/searcher-min.js" defer></script>
+   <script src="assets/js/searcher.js" defer></script>
 </body>
 
 </html>
