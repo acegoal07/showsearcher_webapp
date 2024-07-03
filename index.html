@@ -14,6 +14,7 @@
    <link rel="stylesheet" href="assets/css/style-min.css">
    <script src="https://acegoal07.dev/assets/js/bootstrap.bundle.min.js" defer></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body class="bg-dark-subtle">
@@ -130,6 +131,28 @@
          </div>
       </div>
 
+      <div class="modal fade" id="showData" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="showDataLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3 id="show-title"></h3>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <h4>Release date:</h4>
+                  <p id="show-release-date" class="text-muted"></p>
+                  <h4>Show overview:</h4>
+                  <p id="show-description" class="text-muted"></p>
+                  <h4>Show genres:</h4>
+                  <p id="show-genres" class="text-muted"></p>
+                  <h4>Show rating:</h4>
+                  <p id="show-rating" class="text-muted"></p>
+               </div>
+            </div>
+         </div>
+      </div>
+
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
          id="search-results"></div>
@@ -142,7 +165,7 @@
             target="_blank" rel="noopener">Bootstrap</a>, by acegoal07</p>
    </footer>
 
-   <script src="assets/js/searcher.js" defer></script>
+   <script src="assets/js/searcher-min.js" defer></script>
 </body>
 
 </html>

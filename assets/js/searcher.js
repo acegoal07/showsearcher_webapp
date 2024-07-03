@@ -10,7 +10,7 @@ const searchSettings = new SearchSettings();
 window.addEventListener('load', function () {
    let typingTimer;
    const myInput = document.querySelector("#search-input");
-   myInput.textContent = '';
+   myInput.value = null;
 
    // Add event listener to the search input type
    myInput.addEventListener('keyup', () => {
@@ -118,7 +118,12 @@ function search(myInput) {
             }
 
             cardDiv.addEventListener('click', () => {
-               const url = `https://api.themoviedb.org/3/movie/${result.id}/watch/providers`;
+               let url;
+               if (result.media_type === 'movie' || searchSettings.movieOrTv == 1) {
+                  url = `https://api.themoviedb.org/3/movie/${result.id}/watch/providers`;
+               } else if (result.media_type === 'tv' || searchSettings.movieOrTv == 2) {
+                  url = `https://api.themoviedb.org/3/tv/${result.id}/watch/providers`;
+               } else { return; }
                const options = {
                   method: 'GET',
                   headers: {
@@ -129,8 +134,16 @@ function search(myInput) {
                fetch(url, options)
                   .then(res => res.json())
                   .then(json => {
+                     document.querySelector("#show-title").textContent = result.title || result.name || result.original_title || result.original_name;
+                     document.querySelector("#show-release-date").textContent = result.release_date || result.first_air_date || 'No release date available';
+                     document.querySelector("#show-description").textContent = result.overview || 'No overview available';
+                     document.querySelector("#show-genres").textContent = result.genre_ids || 'No genres available';
+                     document.querySelector("#show-rating").textContent = result.vote_average || 'No rating available';
+
                      console.log(json);
                      console.log(result);
+
+                     $("#showData").modal("show");
                   })
                   .catch(err => console.error('error:' + err));
             });
