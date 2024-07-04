@@ -56,13 +56,19 @@ function search(myInput) {
       }
    };
    fetch(url, options)
-      .then(res => res.json())
-      .then(json => {
+      .then(res => {
+         if (!res.ok) {
+            throw new Error('Network response was not ok');
+         } else {
+            return res.json();
+         }
+      })
+      .then(searchData => {
          const searchResults = document.querySelector("#search-results");
          searchResults.innerHTML = '';
-         console.log(json)
-         json.results.forEach(result => {
-            if (result.media_type === 'person') { return; }
+         // console.log(searchData);
+         searchData.results.forEach(showData => {
+            if (showData.media_type === 'person') { return; }
             const colDiv = document.createElement('div');
             colDiv.classList.add('col');
 
@@ -70,11 +76,11 @@ function search(myInput) {
             cardDiv.classList.add('card', 'bg-body-tertiary', 'justify-content-center', 'h-100', 'shadow-lg', 'border-0');
             colDiv.appendChild(cardDiv);
 
-            if (result.poster_path) {
+            if (showData.poster_path) {
                const img = document.createElement('img');
                img.classList.add('card-img');
-               img.src = `https://image.tmdb.org/t/p/w500${result.poster_path}`
-               img.alt = result.title || result.name || result.original_title || result.original_name;
+               img.src = `https://image.tmdb.org/t/p/w500${showData.poster_path}`
+               img.alt = showData.title || showData.name || showData.original_title || showData.original_name;
                cardDiv.appendChild(img);
             } else {
                const fillerImgDiv = document.createElement('div');
@@ -83,7 +89,7 @@ function search(myInput) {
                const img = document.createElement('img');
                img.classList.add('card-img');
                img.src = 'assets/images/FillerImage.webp';
-               img.alt = result.title || result.name || result.original_title || result.original_name;
+               img.alt = showData.title || showData.name || showData.original_title || showData.original_name;
                fillerImgDiv.appendChild(img);
 
                const fillerImgText = document.createElement('div');
@@ -91,18 +97,18 @@ function search(myInput) {
 
                const fillerImgTextName = document.createElement('div');
                fillerImgTextName.classList.add('fw-bold', 'fs-5', 'pb-1');
-               fillerImgTextName.textContent = result.title || result.name || result.original_title || result.original_name;
+               fillerImgTextName.textContent = showData.title || showData.name || showData.original_title || showData.original_name;
                fillerImgText.appendChild(fillerImgTextName);
 
                const fillerImgTextYear = document.createElement('div');
                fillerImgTextYear.classList.add('fs-6', 'text-muted', 'pb-1');
-               fillerImgTextYear.textContent = result.release_date || result.first_air_date || 'No release date available';
+               fillerImgTextYear.textContent = showData.release_date || showData.first_air_date || 'No release date available';
                fillerImgText.appendChild(fillerImgTextYear);
 
                const fillerImgTextOverview = document.createElement('div');
                fillerImgTextOverview.classList.add('fs-6', 'text-muted');
-               if (result.overview) {
-                  fillerImgTextOverview.textContent = `${result.overview.substring(0, 150)} ...`;
+               if (showData.overview) {
+                  fillerImgTextOverview.textContent = `${showData.overview.substring(0, 150)} ...`;
                } else {
                   fillerImgTextOverview.textContent = 'No overview available';
                }
@@ -119,35 +125,58 @@ function search(myInput) {
 
             cardDiv.addEventListener('click', () => {
                let url;
-               if (result.media_type === 'movie' || searchSettings.movieOrTv == 1) {
-                  url = `https://api.themoviedb.org/3/movie/${result.id}/watch/providers`;
-               } else if (result.media_type === 'tv' || searchSettings.movieOrTv == 2) {
-                  url = `https://api.themoviedb.org/3/tv/${result.id}/watch/providers`;
+               if (showData.media_type === 'movie' || searchSettings.movieOrTv == 1) {
+                  url = `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers`;
+               } else if (showData.media_type === 'tv' || searchSettings.movieOrTv == 2) {
+                  url = `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`;
                } else { return; }
-               const options = {
-                  method: 'GET',
-                  headers: {
-                     accept: 'application/json',
-                     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzk4MTAxNjk0OTQ2MmE4NmJlNTA2NTc2Yjg1ZjZlNCIsInN1YiI6IjY2MjFkMDY1Y2NkZTA0MDE4ODA2NDA4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xUExDZr1UbIizmXNPNqotICIYYKTQfRltq2uIgq9qjI'
-                  }
-               };
                fetch(url, options)
-                  .then(res => res.json())
-                  .then(json => {
-                     document.querySelector("#show-title").textContent = result.title || result.name || result.original_title || result.original_name;
-                     document.querySelector("#show-release-date").textContent = result.release_date || result.first_air_date || 'No release date available';
-                     document.querySelector("#show-description").textContent = result.overview || 'No overview available';
-                     document.querySelector("#show-genres").textContent = result.genre_ids || 'No genres available';
-                     document.querySelector("#show-rating").textContent = result.vote_average || 'No rating available';
+                  .then(res => {
+                     if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                     } else {
+                        return res.json();
+                     }
+                  })
+                  .then(providerData => {
+                     let url;
+                     if (showData.media_type === 'movie' || searchSettings.movieOrTv == 1) {
+                        url = `https://api.themoviedb.org/3/genre/movie/list?language=en`;
+                     } else if (showData.media_type === 'tv' || searchSettings.movieOrTv == 2) {
+                        url = `https://api.themoviedb.org/3/genre/tv/list?language=en`;
+                     } else { return; }
+                     fetch(url, options)
+                        .then(res => {
+                           if (!res.ok) {
+                              throw new Error('Network response was not ok');
+                           } else {
+                              return res.json();
+                           }
+                        })
+                        .then(genreData => {
+                           const genres = [];
+                           showData.genre_ids.forEach(genreId => {
+                              const returnGenre = genreData.genres.find(e => e.id === genreId);
+                              if (returnGenre) {
+                                 genres.push(returnGenre.name);
+                              }
+                           });
 
-                     console.log(json);
-                     console.log(result);
+                           document.querySelector("#show-title").textContent = showData.title || showData.name || showData.original_title || showData.original_name;
+                           document.querySelector("#show-release-date").textContent = showData.release_date || showData.first_air_date || 'No release date available';
+                           document.querySelector("#show-description").textContent = showData.overview || 'No overview available';
+                           document.querySelector("#show-genres").textContent = genres.join(", ") || 'No genres available';
+                           document.querySelector("#show-rating").textContent = showData.vote_average || 'No rating available';
 
-                     $("#showData").modal("show");
+                           // console.log(providerData);
+                           // console.log(showData);
+
+                           $("#showData").modal("show");
+                        })
+                        .catch(err => console.error('error:' + err));
                   })
                   .catch(err => console.error('error:' + err));
             });
-
             searchResults.appendChild(colDiv);
          });
       }).catch(err => console.error('error:' + err));
