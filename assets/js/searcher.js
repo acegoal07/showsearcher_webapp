@@ -1,8 +1,9 @@
 class SearchSettings {
    constructor() {
       this.page = 1;
+      this.maxPage = 1;
       this.adultContent = false;
-      this.movieOrTv = "0";
+      this.movieOrTv = 0;
    }
 }
 const searchSettings = new SearchSettings();
@@ -15,22 +16,43 @@ window.addEventListener('load', function () {
    // Add event listener to the search input type
    myInput.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
+      searchSettings.page = 1;
       if (myInput.value) {
          typingTimer = setTimeout(() => search(myInput.value.trim()), 200);
       }
    });
 
-   // Add event listener to adult items settings
-   searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
-   document.querySelector("#adult-items-settings").addEventListener('change', () => {
-      searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
+   document.querySelector("#select-movies").addEventListener('click', () => {
+      searchSettings.movieOrTv = 0;
+      searchSettings.page = 1;
       search(myInput.value.trim());
    });
 
-   // Add event listener to movie or tv settings
-   searchSettings.movieOrTv = document.querySelector("#movie-or-tv-settings").value;
-   document.querySelector("#movie-or-tv-settings").addEventListener('change', () => {
-      searchSettings.movieOrTv = document.querySelector("#movie-or-tv-settings").value;
+   document.querySelector("#select-tv-shows").addEventListener('click', () => {
+      searchSettings.movieOrTv = 1;
+      searchSettings.page = 1;
+      search(myInput.value.trim());
+   });
+
+   // Add event listener to pagination previous button
+   document.querySelector("#pagination-back-btn").addEventListener('click', () => {
+      if (searchSettings.maxPage == 1) { return; }
+      if (searchSettings.page - 1 < 1) {
+         searchSettings.page = searchSettings.maxPage;
+      } else {
+         searchSettings.page--;
+      }
+      search(myInput.value.trim());
+   });
+
+   // Add event listener to pagination next button
+   document.querySelector("#pagination-next-btn").addEventListener('click', () => {
+      if (searchSettings.maxPage == 1) { return; }
+      if (searchSettings.page + 1 > searchSettings.maxPage) {
+         searchSettings.page = 1;
+      } else {
+         searchSettings.page++;
+      }
       search(myInput.value.trim());
    });
 });
@@ -40,14 +62,10 @@ window.addEventListener('load', function () {
  * @param {String} myInput The user's search input
  */
 function search(myInput) {
-   let url;
-   if (searchSettings.movieOrTv == 1) {
-      url = `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`;
-   } else if (searchSettings.movieOrTv == 2) {
-      url = `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`;
-   } else {
-      url = `https://api.themoviedb.org/3/search/multi?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`;
-   }
+   document.querySelector("#search-results").innerHTML = '';
+   hidePaginationButtons();
+   if (!myInput) { return; }
+
    const options = {
       method: 'GET',
       headers: {
@@ -55,20 +73,23 @@ function search(myInput) {
          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzk4MTAxNjk0OTQ2MmE4NmJlNTA2NTc2Yjg1ZjZlNCIsInN1YiI6IjY2MjFkMDY1Y2NkZTA0MDE4ODA2NDA4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xUExDZr1UbIizmXNPNqotICIYYKTQfRltq2uIgq9qjI'
       }
    };
-   fetch(url, options)
+
+   hideNoResultsError();
+
+   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, options)
       .then(res => {
-         if (!res.ok) {
-            throw new Error('Network response was not ok');
-         } else {
-            return res.json();
-         }
+         if (!res.ok) { throw new Error('Network response was not ok'); }
+         else { return res.json(); }
       })
       .then(searchData => {
          const searchResults = document.querySelector("#search-results");
-         searchResults.innerHTML = '';
-         // console.log(searchData);
+         searchSettings.maxPage = searchData.total_pages;
+
+         if (searchSettings.maxPage > 1) {
+            showPaginationButtons();
+         }
+
          searchData.results.forEach(showData => {
-            if (showData.media_type === 'person') { return; }
             const colDiv = document.createElement('div');
             colDiv.classList.add('col');
 
@@ -124,34 +145,16 @@ function search(myInput) {
             }
 
             cardDiv.addEventListener('click', () => {
-               let url;
-               if (showData.media_type === 'movie' || searchSettings.movieOrTv == 1) {
-                  url = `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers`;
-               } else if (showData.media_type === 'tv' || searchSettings.movieOrTv == 2) {
-                  url = `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`;
-               } else { return; }
-               fetch(url, options)
+               fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers` : `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`, options)
                   .then(res => {
-                     if (!res.ok) {
-                        throw new Error('Network response was not ok');
-                     } else {
-                        return res.json();
-                     }
+                     if (!res.ok) { throw new Error('Network response was not ok'); }
+                     else { return res.json(); }
                   })
                   .then(providerData => {
-                     let url;
-                     if (showData.media_type === 'movie' || searchSettings.movieOrTv == 1) {
-                        url = `https://api.themoviedb.org/3/genre/movie/list?language=en`;
-                     } else if (showData.media_type === 'tv' || searchSettings.movieOrTv == 2) {
-                        url = `https://api.themoviedb.org/3/genre/tv/list?language=en`;
-                     } else { return; }
-                     fetch(url, options)
+                     fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/genre/movie/list?language=en` : `https://api.themoviedb.org/3/genre/tv/list?language=en`, options)
                         .then(res => {
-                           if (!res.ok) {
-                              throw new Error('Network response was not ok');
-                           } else {
-                              return res.json();
-                           }
+                           if (!res.ok) { throw new Error('Network response was not ok'); }
+                           else { return res.json(); }
                         })
                         .then(genreData => {
                            const genres = [];
@@ -166,10 +169,7 @@ function search(myInput) {
                            document.querySelector("#show-release-date").textContent = showData.release_date || showData.first_air_date || 'No release date available';
                            document.querySelector("#show-description").textContent = showData.overview || 'No overview available';
                            document.querySelector("#show-genres").textContent = genres.join(", ") || 'No genres available';
-                           document.querySelector("#show-rating").textContent = showData.vote_average || 'No rating available';
-
-                           // console.log(providerData);
-                           // console.log(showData);
+                           document.querySelector("#show-rating").textContent = parseFloat(showData.vote_average).toFixed(1) || 'No rating available';
 
                            $("#showData").modal("show");
                         })
@@ -177,7 +177,41 @@ function search(myInput) {
                   })
                   .catch(err => console.error('error:' + err));
             });
+
             searchResults.appendChild(colDiv);
          });
+
+         if (searchData.results.length == 0 && document.querySelector("#no-result-error").classList.contains('d-none')) {
+            showNoResultsError();
+         }
+
       }).catch(err => console.error('error:' + err));
+}
+
+/**
+ * Shows the no results error message
+ */
+function showNoResultsError() {
+   document.querySelector("#no-result-error").classList.remove('d-none');
+}
+
+/**
+ * Hides the no results error message
+ */
+function hideNoResultsError() {
+   document.querySelector("#no-result-error").classList.add('d-none');
+}
+
+/**
+ * Shows the pagination buttons
+ */
+function showPaginationButtons() {
+   document.querySelector("#pagination-btns").classList.remove('d-none');
+}
+
+/**
+ * Hides the pagination buttons
+ */
+function hidePaginationButtons() {
+   document.querySelector("#pagination-btns").classList.add('d-none');
 }

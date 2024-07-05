@@ -91,8 +91,17 @@
          <p class="col-md-8 fs-6">Search for shows and movies and find all the information you need</p>
       </div>
 
+      <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow mb-3">
+         <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist">
+            <a class="nav-link border border-primary active" id="select-movies" data-bs-toggle="tab" type="button"
+               role="tab">Movies</a>
+            <a class="nav-link border border-primary" id="select-tv-shows" data-bs-toggle="tab" type="button"
+               role="tab">TV-Shows</a>
+         </div>
+      </div>
+
       <div class="input-group input-group-lg pb-4">
-         <input type="text" class="form-control bg-body-tertiary border-0" aria-label="Sizing example input"
+         <input type="text" class="form-control bg-body-tertiary border-0 shadow" aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-lg" placeholder="Search" aria-placeholder="Search" id="search-input">
          <button type="button" class="btn btn-primary bi bi-sliders" data-bs-toggle="modal"
             data-bs-target="#searchSettings" aria-label="search settings"></button>
@@ -107,22 +116,13 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
-                  <div class="input-group mb-3">
+                  <div class="input-group">
                      <label class="input-group-text" for="adult-items-settings">Adult items</label>
                      <select class="form-select" id="adult-items-settings">
                         <option value="false" selected>No</option>
                         <option value="true">Yes</option>
                      </select>
                   </div>
-                  <div class="input-group mb-3">
-                     <label class="input-group-text" for="movie-or-tv-settings">Movie or TV</label>
-                     <select class="form-select" id="movie-or-tv-settings">
-                        <option value="0" selected>Both</option>
-                        <option value="1">Movie</option>
-                        <option value="2">TV</option>
-                     </select>
-                  </div>
-
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -142,20 +142,34 @@
                <div class="modal-body">
                   <h4>Release date:</h4>
                   <p id="show-release-date" class="text-muted"></p>
-                  <h4>Show overview:</h4>
+                  <h4>Overview:</h4>
                   <p id="show-description" class="text-muted"></p>
-                  <h4>Show genres:</h4>
+                  <h4>Genres:</h4>
                   <p id="show-genres" class="text-muted"></p>
-                  <h4>Show rating:</h4>
-                  <p id="show-rating" class="text-muted"></p>
+                  <h4>Average rating:</h4>
+                  <p id="show-rating" class="text-muted bi bi-star-fill"></p>
                </div>
             </div>
          </div>
       </div>
 
-
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
          id="search-results"></div>
+      <h2 id="no-result-error" class="text-center pt-5 pb-5 d-none">No results found</h2>
+      <div aria-label="Result pagination buttons" class="pt-3 d-none" id="pagination-btns">
+         <ul class="pagination justify-content-center">
+            <li id="pagination-back-btn" class="page-item">
+               <a class="page-link fs-5 fw-bold" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+               </a>
+            </li>
+            <li id="pagination-next-btn" class="page-item">
+               <a class="page-link fs-5 fw-bold" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+               </a>
+            </li>
+         </ul>
+      </div>
    </main>
 
    <footer class="container mt-3 text-center">
