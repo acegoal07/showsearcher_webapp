@@ -13,6 +13,13 @@ window.addEventListener('load', function () {
    const myInput = document.querySelector("#search-input");
    myInput.value = null;
 
+   // Add event listener to adult items settings
+   searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
+   document.querySelector("#adult-items-settings").addEventListener('change', () => {
+      searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
+      search(myInput.value.trim());
+   });
+
    // Add event listener to the search input type
    myInput.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
@@ -170,6 +177,47 @@ function search(myInput) {
                            document.querySelector("#show-description").textContent = showData.overview || 'No overview available';
                            document.querySelector("#show-genres").textContent = genres.join(", ") || 'No genres available';
                            document.querySelector("#show-rating").textContent = parseFloat(showData.vote_average).toFixed(1) || 'No rating available';
+
+                           const whereToWatchDiv = document.querySelector("#where-to-watch");
+                           whereToWatchDiv.style.display = 'none';
+
+                           const buyOutputDiv = document.querySelector("#buy-output");
+                           buyOutputDiv.innerHTML = '';
+                           const rentOutputDiv = document.querySelector("#rent-output");
+                           rentOutputDiv.innerHTML = '';
+                           const streamOutputDiv = document.querySelector("#stream-output");
+                           streamOutputDiv.innerHTML = '';
+
+                           const GBProviders = providerData.results.GB;
+
+                           if (GBProviders) {
+                              console.log(GBProviders);
+                              whereToWatchDiv.style.display = 'block';
+
+                              if (GBProviders.buy) {
+                                 for (const provider of GBProviders.buy) {
+                                    const name = document.createElement('p');
+                                    name.textContent = provider.provider_name;
+                                    buyOutputDiv.appendChild(name);
+                                 }
+                              }
+
+                              if (GBProviders.rent) {
+                                 for (const provider of GBProviders.rent) {
+                                    const name = document.createElement('p');
+                                    name.textContent = provider.provider_name;
+                                    rentOutputDiv.appendChild(name);
+                                 }
+                              }
+
+                              if (GBProviders.flatrate) {
+                                 for (const provider of GBProviders.flatrate) {
+                                    const name = document.createElement('p');
+                                    name.textContent = provider.provider_name;
+                                    streamOutputDiv.appendChild(name);
+                                 }
+                              }
+                           }
 
                            $("#showData").modal("show");
                         })

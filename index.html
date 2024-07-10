@@ -148,6 +148,40 @@
                   <p id="show-genres" class="text-muted"></p>
                   <h4>Average rating:</h4>
                   <p id="show-rating" class="text-muted bi bi-star-fill"></p>
+
+                  <div id="where-to-watch">
+                     <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
+                        <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist">
+                           <a class="nav-link border border-primary active" id="buy-tab" data-bs-toggle="tab"
+                              data-bs-target="#buy-section" type="button" role="tab">Buy</a>
+                           <a class="nav-link border border-primary" id="rent-tab" data-bs-toggle="tab"
+                              data-bs-target="#rent-section" type="button" role="tab">Rent</a>
+                           <a class="nav-link border border-primary" id="stream-tab" data-bs-toggle="tab"
+                              data-bs-target="#stream-section" type="button" role="tab">Stream</a>
+                        </div>
+                     </div>
+
+                     <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
+                        <div class="tab-content" id="WhereToWatchTabs">
+                           <div class="tab-pane show active" id="buy-section" role="tabpanel" aria-labelledby="buy-tab">
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to buy</h2>
+                              <div id="buy-output"></div>
+                           </div>
+
+                           <div class="tab-pane" id="rent-section" role="tabpanel" aria-labelledby="rent-tab">
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to Rent</h2>
+                              <div id="rent-output"></div>
+                           </div>
+
+                           <div class="tab-pane" id="stream-section" role="tabpanel" aria-labelledby="stream-tab">
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to stream</h2>
+                              <div id="stream-output"></div>
+                           </div>
+
+                        </div>
+                     </div>
+                  </div>
+
                </div>
             </div>
          </div>
