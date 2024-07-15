@@ -200,6 +200,10 @@ function search(myInput) {
                                     name.textContent = provider.provider_name;
                                     buyOutputDiv.appendChild(name);
                                  }
+                              } else {
+                                 const name = document.createElement('p');
+                                 name.textContent = 'No buy providers available';
+                                 buyOutputDiv.appendChild(name);
                               }
 
                               if (GBProviders.rent) {
@@ -208,6 +212,10 @@ function search(myInput) {
                                     name.textContent = provider.provider_name;
                                     rentOutputDiv.appendChild(name);
                                  }
+                              } else {
+                                 const name = document.createElement('p');
+                                 name.textContent = 'No rent providers available';
+                                 rentOutputDiv.appendChild(name);
                               }
 
                               if (GBProviders.flatrate) {
@@ -216,6 +224,10 @@ function search(myInput) {
                                     name.textContent = provider.provider_name;
                                     streamOutputDiv.appendChild(name);
                                  }
+                              } else {
+                                 const name = document.createElement('p');
+                                 name.textContent = 'No stream providers available';
+                                 streamOutputDiv.appendChild(name);
                               }
                            }
 
