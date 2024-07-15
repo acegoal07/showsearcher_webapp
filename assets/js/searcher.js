@@ -82,6 +82,7 @@ function search(myInput) {
    };
 
    hideNoResultsError();
+   showLoadingSpinner();
 
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, options)
       .then(res => {
@@ -245,6 +246,8 @@ function search(myInput) {
             showNoResultsError();
          }
 
+         hideLoadingSpinner();
+
       }).catch(err => console.error('error:' + err));
 }
 
@@ -274,4 +277,18 @@ function showPaginationButtons() {
  */
 function hidePaginationButtons() {
    document.querySelector("#pagination-btns").classList.add('d-none');
+}
+
+/**
+ * Shows the loading spinner
+ */
+function showLoadingSpinner() {
+   document.querySelector("#loading-spinner").classList.remove('d-none');
+}
+
+/**
+ * Hides the loading spinner
+ */
+function hideLoadingSpinner() {
+   document.querySelector("#loading-spinner").classList.add('d-none');
 }
