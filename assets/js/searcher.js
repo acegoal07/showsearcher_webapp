@@ -3,6 +3,7 @@ class SearchSettings {
       this.page = 1;
       this.maxPage = 1;
       this.adultContent = false;
+      this.region = 'GB';
       this.movieOrTv = 0;
    }
 }
@@ -12,11 +13,22 @@ window.addEventListener('load', function () {
    let typingTimer;
    const myInput = document.querySelector("#search-input");
    myInput.value = null;
+   resetSettings();
 
    // Add event listener to adult items settings
-   searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
    document.querySelector("#adult-items-settings").addEventListener('change', () => {
       searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
+      search(myInput.value.trim());
+   });
+
+   // Add event listener to region settings
+   document.querySelector("#region-settings").addEventListener('change', () => {
+      searchSettings.region = document.querySelector("#region-settings").value;
+   });
+
+   // Add event listener to reset settings button
+   document.querySelector("#reset-settings").addEventListener('click', () => {
+      resetSettings();
       search(myInput.value.trim());
    });
 
@@ -189,14 +201,14 @@ function search(myInput) {
                            const streamOutputDiv = document.querySelector("#stream-output");
                            streamOutputDiv.innerHTML = '';
 
-                           const GBProviders = providerData.results.GB;
+                           const regionProviderData = providerData.results[searchSettings.region];
+                           document.querySelector("#region-display").textContent = searchSettings.region;
 
-                           if (GBProviders) {
-                              console.log(GBProviders);
+                           if (regionProviderData) {
                               whereToWatchDiv.style.display = 'block';
 
-                              if (GBProviders.buy) {
-                                 for (const provider of GBProviders.buy) {
+                              if (regionProviderData.buy) {
+                                 for (const provider of regionProviderData.buy) {
                                     const name = document.createElement('p');
                                     name.textContent = provider.provider_name;
                                     buyOutputDiv.appendChild(name);
@@ -207,8 +219,8 @@ function search(myInput) {
                                  buyOutputDiv.appendChild(name);
                               }
 
-                              if (GBProviders.rent) {
-                                 for (const provider of GBProviders.rent) {
+                              if (regionProviderData.rent) {
+                                 for (const provider of regionProviderData.rent) {
                                     const name = document.createElement('p');
                                     name.textContent = provider.provider_name;
                                     rentOutputDiv.appendChild(name);
@@ -219,8 +231,8 @@ function search(myInput) {
                                  rentOutputDiv.appendChild(name);
                               }
 
-                              if (GBProviders.flatrate) {
-                                 for (const provider of GBProviders.flatrate) {
+                              if (regionProviderData.flatrate) {
+                                 for (const provider of regionProviderData.flatrate) {
                                     const name = document.createElement('p');
                                     name.textContent = provider.provider_name;
                                     streamOutputDiv.appendChild(name);
@@ -249,6 +261,15 @@ function search(myInput) {
          hideLoadingSpinner();
 
       }).catch(err => console.error('error:' + err));
+}
+/**
+ * Resets the settings to their default values
+ */
+function resetSettings() {
+   searchSettings.adultContent = false;
+   document.querySelector("#adult-items-settings").value = false;
+   searchSettings.region = 'GB';
+   document.querySelector("#region-settings").value = 'GB';
 }
 
 /**

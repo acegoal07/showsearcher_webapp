@@ -122,8 +122,17 @@
                         <option value="true">Yes</option>
                      </select>
                   </div>
+                  <div class="input-group mt-3">
+                     <label class="input-group-text" for="region-settings">Region</label>
+                     <select class="form-select" id="region-settings">
+                        <option value="GB" selected>GB</option>
+                        <option value="US">US</option>
+                        <option value="FR">FR</option>
+                     </select>
+                  </div>
                </div>
                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="reset-settings">Reset</button>
                   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                </div>
             </div>
@@ -157,6 +166,11 @@
                               data-bs-target="#rent-section" type="button" role="tab">Rent</a>
                            <a class="nav-link border border-primary" id="stream-tab" data-bs-toggle="tab"
                               data-bs-target="#stream-section" type="button" role="tab">Stream</a>
+                        </div>
+                        <p class="text-center mt-2 mb-0 p-0">The region can be changed in the settings</p>
+                        <div class="text-center">
+                           <p class="d-inline">Current region:</p>
+                           <p class="d-inline" id="region-display">GB</p>
                         </div>
                      </div>
 
