@@ -22,6 +22,8 @@ window.addEventListener('load', function () {
    });
 
    // Add event listener to region settings
+   searchSettings.region = getRegion();
+   document.querySelector("#region-settings").value = searchSettings.region;
    document.querySelector("#region-settings").addEventListener('change', () => {
       searchSettings.region = document.querySelector("#region-settings").value;
    });
@@ -41,12 +43,14 @@ window.addEventListener('load', function () {
       }
    });
 
+   // Add event listener to switch to movies button
    document.querySelector("#select-movies").addEventListener('click', () => {
       searchSettings.movieOrTv = 0;
       searchSettings.page = 1;
       search(myInput.value.trim());
    });
 
+   // Add event listener to switch to tv shows button
    document.querySelector("#select-tv-shows").addEventListener('click', () => {
       searchSettings.movieOrTv = 1;
       searchSettings.page = 1;
@@ -204,7 +208,9 @@ function search(myInput) {
                            const regionProviderData = providerData.results[searchSettings.region];
                            document.querySelector("#region-display").textContent = searchSettings.region;
 
-                           if (regionProviderData) {
+                           // Missing support for free providers
+                           if (regionProviderData.buy || regionProviderData.rent || regionProviderData.flatrate) {
+                              // if (regionProviderData) {
                               whereToWatchDiv.style.display = 'block';
 
                               if (regionProviderData.buy) {
@@ -268,8 +274,19 @@ function search(myInput) {
 function resetSettings() {
    searchSettings.adultContent = false;
    document.querySelector("#adult-items-settings").value = false;
-   searchSettings.region = 'GB';
-   document.querySelector("#region-settings").value = 'GB';
+   searchSettings.region = getRegion();
+   document.querySelector("#region-settings").value = searchSettings.region;
+}
+
+/**
+ * Returns the region of the user
+ * @returns {String} The region of the user
+ */
+function getRegion() {
+   const re = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i;
+   const region = navigator.language;
+   if (!re.test(region)) { return 'GB'; }
+   return re.exec(region)[5];
 }
 
 /**
