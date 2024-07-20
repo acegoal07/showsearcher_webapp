@@ -206,50 +206,51 @@ function search(myInput) {
                            streamOutputDiv.innerHTML = '';
 
                            const regionProviderData = providerData.results[searchSettings.region];
-                           document.querySelector("#region-display").textContent = searchSettings.region;
+                           if (regionProviderData) {
+                              document.querySelector("#region-display").textContent = searchSettings.region;
 
-                           // Missing support for free providers
-                           if (regionProviderData.buy || regionProviderData.rent || regionProviderData.flatrate) {
-                              // if (regionProviderData) {
-                              whereToWatchDiv.style.display = 'block';
+                              // Missing support for free providers
+                              if (regionProviderData.buy || regionProviderData.rent || regionProviderData.flatrate) {
+                                 // if (regionProviderData) {
+                                 whereToWatchDiv.style.display = 'block';
 
-                              if (regionProviderData.buy) {
-                                 for (const provider of regionProviderData.buy) {
+                                 if (regionProviderData.buy) {
+                                    for (const provider of regionProviderData.buy) {
+                                       const name = document.createElement('p');
+                                       name.textContent = provider.provider_name;
+                                       buyOutputDiv.appendChild(name);
+                                    }
+                                 } else {
                                     const name = document.createElement('p');
-                                    name.textContent = provider.provider_name;
+                                    name.textContent = 'No buy providers available';
                                     buyOutputDiv.appendChild(name);
                                  }
-                              } else {
-                                 const name = document.createElement('p');
-                                 name.textContent = 'No buy providers available';
-                                 buyOutputDiv.appendChild(name);
-                              }
 
-                              if (regionProviderData.rent) {
-                                 for (const provider of regionProviderData.rent) {
+                                 if (regionProviderData.rent) {
+                                    for (const provider of regionProviderData.rent) {
+                                       const name = document.createElement('p');
+                                       name.textContent = provider.provider_name;
+                                       rentOutputDiv.appendChild(name);
+                                    }
+                                 } else {
                                     const name = document.createElement('p');
-                                    name.textContent = provider.provider_name;
+                                    name.textContent = 'No rent providers available';
                                     rentOutputDiv.appendChild(name);
                                  }
-                              } else {
-                                 const name = document.createElement('p');
-                                 name.textContent = 'No rent providers available';
-                                 rentOutputDiv.appendChild(name);
-                              }
 
-                              if (regionProviderData.flatrate) {
-                                 for (const provider of regionProviderData.flatrate) {
+                                 if (regionProviderData.flatrate) {
+                                    for (const provider of regionProviderData.flatrate) {
+                                       const name = document.createElement('p');
+                                       name.textContent = provider.provider_name;
+                                       streamOutputDiv.appendChild(name);
+                                    }
+                                 } else {
                                     const name = document.createElement('p');
-                                    name.textContent = provider.provider_name;
+                                    name.textContent = 'No stream providers available';
                                     streamOutputDiv.appendChild(name);
                                  }
-                              } else {
-                                 const name = document.createElement('p');
-                                 name.textContent = 'No stream providers available';
-                                 streamOutputDiv.appendChild(name);
                               }
                            }
-
                            $("#showData").modal("show");
                         })
                         .catch(err => console.error('error:' + err));
