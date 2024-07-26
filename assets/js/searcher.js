@@ -9,6 +9,13 @@ class SearchSettings {
 }
 const searchSettings = new SearchSettings();
 
+const tabTriggerList = {
+   buy: null,
+   rent: null,
+   stream: null,
+   freeStream: null
+}
+
 window.addEventListener('load', function () {
    let typingTimer;
    const myInput = document.querySelector("#search-input");
@@ -78,6 +85,35 @@ window.addEventListener('load', function () {
       }
       search(myInput.value.trim());
    });
+
+   // Add event listener to where to watch tabs
+   const buyTab = document.querySelector("#buy-tab");
+   tabTriggerList.buy = new bootstrap.Tab(buyTab);
+   buyTab.addEventListener('click', event => {
+      event.preventDefault();
+      tabTriggerList.buy.show();
+   });
+
+   const rentTab = document.querySelector("#rent-tab");
+   tabTriggerList.rent = new bootstrap.Tab(rentTab);
+   rentTab.addEventListener('click', event => {
+      event.preventDefault();
+      tabTriggerList.rent.show();
+   });
+
+   const streamTab = document.querySelector("#stream-tab");
+   tabTriggerList.stream = new bootstrap.Tab(streamTab);
+   streamTab.addEventListener('click', event => {
+      event.preventDefault();
+      tabTriggerList.stream.show();
+   });
+
+   const freeStreamTab = document.querySelector("#free-stream-tab");
+   tabTriggerList.freeStream = new bootstrap.Tab(freeStreamTab);
+   freeStreamTab.addEventListener('click', event => {
+      event.preventDefault();
+      tabTriggerList.freeStream.show();
+   });
 });
 
 /**
@@ -86,7 +122,7 @@ window.addEventListener('load', function () {
  */
 function search(myInput) {
    document.querySelector("#search-results").innerHTML = '';
-   hidePaginationButtons();
+   document.querySelector("#pagination-btns").classList.add('d-none');
    if (!myInput) { return; }
 
    const options = {
@@ -97,8 +133,8 @@ function search(myInput) {
       }
    };
 
-   hideNoResultsError();
-   showLoadingSpinner();
+   document.querySelector("#no-result-error").classList.add('d-none');
+   document.querySelector("#loading-spinner").classList.remove('d-none');
 
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, options)
       .then(res => {
@@ -110,7 +146,7 @@ function search(myInput) {
          searchSettings.maxPage = searchData.total_pages;
 
          if (searchSettings.maxPage > 1) {
-            showPaginationButtons();
+            document.querySelector("#pagination-btns").classList.remove('d-none');
          }
 
          searchData.results.forEach(showData => {
@@ -196,60 +232,89 @@ function search(myInput) {
                            document.querySelector("#show-rating").textContent = parseFloat(showData.vote_average).toFixed(1) || 'No rating available';
 
                            const whereToWatchDiv = document.querySelector("#where-to-watch");
-                           whereToWatchDiv.style.display = 'none';
+                           whereToWatchDiv.classList.add("d-none");
 
+                           const buyTab = document.querySelector("#buy-tab");
+                           buyTab.classList.add("d-none");
                            const buyOutputDiv = document.querySelector("#buy-output");
                            buyOutputDiv.innerHTML = '';
+
+                           const rentTab = document.querySelector("#rent-tab");
+                           rentTab.classList.add("d-none");
                            const rentOutputDiv = document.querySelector("#rent-output");
                            rentOutputDiv.innerHTML = '';
+
+                           const streamTab = document.querySelector("#stream-tab");
+                           streamTab.classList.add("d-none");
                            const streamOutputDiv = document.querySelector("#stream-output");
                            streamOutputDiv.innerHTML = '';
+
+                           const freeStreamTab = document.querySelector("#free-stream-tab");
+                           freeStreamTab.classList.add("d-none");
+                           const freeStreamOutputDiv = document.querySelector("#free-stream-output");
+                           freeStreamOutputDiv.innerHTML = '';
 
                            const regionProviderData = providerData.results[searchSettings.region];
                            if (regionProviderData) {
                               document.querySelector("#region-display").textContent = searchSettings.region;
+                              const availableSections = {
+                                 buy: false,
+                                 rent: false,
+                                 stream: false,
+                                 freeStream: false
+                              }
 
-                              // Missing support for free providers
-                              if (regionProviderData.buy || regionProviderData.rent || regionProviderData.flatrate) {
-                                 // if (regionProviderData) {
-                                 whereToWatchDiv.style.display = 'block';
-
-                                 if (regionProviderData.buy) {
-                                    for (const provider of regionProviderData.buy) {
-                                       const name = document.createElement('p');
-                                       name.textContent = provider.provider_name;
-                                       buyOutputDiv.appendChild(name);
-                                    }
-                                 } else {
+                              if (regionProviderData.buy) {
+                                 for (const provider of regionProviderData.buy) {
                                     const name = document.createElement('p');
-                                    name.textContent = 'No buy providers available';
+                                    name.textContent = provider.provider_name;
                                     buyOutputDiv.appendChild(name);
                                  }
+                                 buyTab.classList.remove("d-none");
+                                 availableSections.buy = true;
+                              }
 
-                                 if (regionProviderData.rent) {
-                                    for (const provider of regionProviderData.rent) {
-                                       const name = document.createElement('p');
-                                       name.textContent = provider.provider_name;
-                                       rentOutputDiv.appendChild(name);
-                                    }
-                                 } else {
+                              if (regionProviderData.rent) {
+                                 for (const provider of regionProviderData.rent) {
                                     const name = document.createElement('p');
-                                    name.textContent = 'No rent providers available';
+                                    name.textContent = provider.provider_name;
                                     rentOutputDiv.appendChild(name);
                                  }
+                                 rentTab.classList.remove("d-none");
+                                 availableSections.rent = true;
+                              }
 
-                                 if (regionProviderData.flatrate) {
-                                    for (const provider of regionProviderData.flatrate) {
-                                       const name = document.createElement('p');
-                                       name.textContent = provider.provider_name;
-                                       streamOutputDiv.appendChild(name);
-                                    }
-                                 } else {
+                              if (regionProviderData.flatrate) {
+                                 for (const provider of regionProviderData.flatrate) {
                                     const name = document.createElement('p');
-                                    name.textContent = 'No stream providers available';
+                                    name.textContent = provider.provider_name;
                                     streamOutputDiv.appendChild(name);
                                  }
+                                 streamTab.classList.remove("d-none");
+                                 availableSections.stream = true;
                               }
+
+                              if (regionProviderData.free) {
+                                 for (const provider of regionProviderData.free) {
+                                    const name = document.createElement('p');
+                                    name.textContent = provider.provider_name;
+                                    freeStreamOutputDiv.appendChild(name);
+                                 }
+                                 freeStreamTab.classList.remove("d-none");
+                                 availableSections.freeStream = true;
+                              }
+
+                              if (availableSections.buy) {
+                                 tabTriggerList.buy.show();
+                              } else if (availableSections.rent) {
+                                 tabTriggerList.rent.show();
+                              } else if (availableSections.stream) {
+                                 tabTriggerList.stream.show();
+                              } else if (availableSections.freeStream) {
+                                 tabTriggerList.freeStream.show();
+                              } else { return; }
+
+                              whereToWatchDiv.classList.remove("d-none");
                            }
                            $("#showData").modal("show");
                         })
@@ -262,10 +327,10 @@ function search(myInput) {
          });
 
          if (searchData.results.length == 0 && document.querySelector("#no-result-error").classList.contains('d-none')) {
-            showNoResultsError();
+            document.querySelector("#no-result-error").classList.remove('d-none');
          }
 
-         hideLoadingSpinner();
+         document.querySelector("#loading-spinner").classList.add('d-none');
 
       }).catch(err => console.error('error:' + err));
 }
@@ -288,46 +353,4 @@ function getRegion() {
    const region = navigator.language;
    if (!re.test(region)) { return 'GB'; }
    return re.exec(region)[5];
-}
-
-/**
- * Shows the no results error message
- */
-function showNoResultsError() {
-   document.querySelector("#no-result-error").classList.remove('d-none');
-}
-
-/**
- * Hides the no results error message
- */
-function hideNoResultsError() {
-   document.querySelector("#no-result-error").classList.add('d-none');
-}
-
-/**
- * Shows the pagination buttons
- */
-function showPaginationButtons() {
-   document.querySelector("#pagination-btns").classList.remove('d-none');
-}
-
-/**
- * Hides the pagination buttons
- */
-function hidePaginationButtons() {
-   document.querySelector("#pagination-btns").classList.add('d-none');
-}
-
-/**
- * Shows the loading spinner
- */
-function showLoadingSpinner() {
-   document.querySelector("#loading-spinner").classList.remove('d-none');
-}
-
-/**
- * Hides the loading spinner
- */
-function hideLoadingSpinner() {
-   document.querySelector("#loading-spinner").classList.add('d-none');
 }
