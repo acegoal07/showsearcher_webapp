@@ -11,6 +11,7 @@
    <link rel="stylesheet" href="https://acegoal07.dev/assets/css/bootstrap.min.css">
    <script src="https://acegoal07.dev/assets/js/index-min.js" defer></script>
    <link rel="stylesheet" href="https://acegoal07.dev/assets/css/style-min.css">
+   <link rel="stylesheet" href="assets/css/style-min.css">
    <script src="https://acegoal07.dev/assets/js/bootstrap.bundle.min.js" defer></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -106,8 +107,8 @@
             data-bs-target="#searchSettings" aria-label="search settings"></button>
       </div>
 
-      <div class="modal fade" id="searchSettings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="searchSettingsLabel" aria-hidden="true">
+      <div class="modal fade backdrop-filter-blur-20" id="searchSettings" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="searchSettingsLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                <div class="modal-header">
@@ -275,8 +276,8 @@
          </div>
       </div>
 
-      <div class="modal fade" id="showData" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="showDataLabel" aria-hidden="true">
+      <div class="modal fade backdrop-filter-blur-20" id="showData" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1" aria-labelledby="showDataLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                <div class="modal-header">
@@ -302,7 +303,8 @@
 
                   <div id="where-to-watch">
                      <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
-                        <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist" id="where-to-watch-tabs">
+                        <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist"
+                           id="where-to-watch-tabs">
                            <a class="nav-link border border-primary active" id="buy-tab" data-bs-toggle="tab"
                               data-bs-target="#buy-section" type="button" role="tab">Buy</a>
                            <a class="nav-link border border-primary" id="rent-tab" data-bs-toggle="tab"
@@ -315,7 +317,7 @@
                         <p class="text-center mt-2 mb-0 p-0">The region can be changed in the settings</p>
                         <div class="text-center">
                            <p class="d-inline">Current region:</p>
-                           <p class="d-inline" id="region-display">GB</p>
+                           <p class="d-inline fw-bold text-primary" id="region-display">GB</p>
                         </div>
                      </div>
 
@@ -323,23 +325,23 @@
                         <div class="tab-content" id="WhereToWatchTabs">
 
                            <div class="tab-pane show active" id="buy-section" role="tabpanel" aria-labelledby="buy-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to buy</h2>
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to Buy:</h2>
                               <div id="buy-output"></div>
                            </div>
 
                            <div class="tab-pane" id="rent-section" role="tabpanel" aria-labelledby="rent-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to Rent</h2>
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to Rent:</h2>
                               <div id="rent-output"></div>
                            </div>
 
                            <div class="tab-pane" id="stream-section" role="tabpanel" aria-labelledby="stream-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to stream</h2>
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to Stream:</h2>
                               <div id="stream-output"></div>
                            </div>
 
                            <div class="tab-pane" id="free-stream-section" role="tabpanel"
                               aria-labelledby="free-stream-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to stream for free</h2>
+                              <h2 class="text-center pt-1 fw-bold card-title">Where to stream for free:</h2>
                               <div id="free-stream-output"></div>
                            </div>
 
@@ -359,15 +361,20 @@
          <div class="spinner-border"></div>
       </div>
       <div aria-label="Result pagination buttons" class="pt-3 d-none" id="pagination-btns">
+         <div class="fw-bold w-100 text-center mb-2">
+            <p id="current-page-number" class="d-inline"></p>
+            <p class="d-inline">/</p>
+            <p id="total-pages-number" class="d-inline"></p>
+         </div>
          <ul class="pagination justify-content-center">
             <li id="pagination-back-btn" class="page-item">
-               <a class="page-link fs-5 fw-bold" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
+               <a class="page-link" href="#" aria-label="Previous">
+                  <i class="bi bi-arrow-left"></i>
                </a>
             </li>
             <li id="pagination-next-btn" class="page-item">
-               <a class="page-link fs-5 fw-bold" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
+               <a class="page-link" href="#" aria-label="Next">
+                  <i class="bi bi-arrow-right"></i>
                </a>
             </li>
          </ul>

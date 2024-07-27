@@ -16,8 +16,16 @@ const tabTriggerList = {
    freeStream: null
 }
 
+const fetchSettings = {
+   method: 'GET',
+   headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzk4MTAxNjk0OTQ2MmE4NmJlNTA2NTc2Yjg1ZjZlNCIsInN1YiI6IjY2MjFkMDY1Y2NkZTA0MDE4ODA2NDA4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xUExDZr1UbIizmXNPNqotICIYYKTQfRltq2uIgq9qjI'
+   }
+}
+
+// Add event listener to the load event
 window.addEventListener('load', function () {
-   let typingTimer;
    const myInput = document.querySelector("#search-input");
    myInput.value = null;
    resetSettings();
@@ -42,6 +50,7 @@ window.addEventListener('load', function () {
    });
 
    // Add event listener to the search input type
+   let typingTimer;
    myInput.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
       searchSettings.page = 1;
@@ -124,19 +133,10 @@ function search(myInput) {
    document.querySelector("#search-results").innerHTML = '';
    document.querySelector("#pagination-btns").classList.add('d-none');
    if (!myInput) { return; }
-
-   const options = {
-      method: 'GET',
-      headers: {
-         accept: 'application/json',
-         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Yzk4MTAxNjk0OTQ2MmE4NmJlNTA2NTc2Yjg1ZjZlNCIsInN1YiI6IjY2MjFkMDY1Y2NkZTA0MDE4ODA2NDA4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xUExDZr1UbIizmXNPNqotICIYYKTQfRltq2uIgq9qjI'
-      }
-   };
-
    document.querySelector("#no-result-error").classList.add('d-none');
    document.querySelector("#loading-spinner").classList.remove('d-none');
 
-   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, options)
+   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, fetchSettings)
       .then(res => {
          if (!res.ok) { throw new Error('Network response was not ok'); }
          else { return res.json(); }
@@ -146,6 +146,8 @@ function search(myInput) {
          searchSettings.maxPage = searchData.total_pages;
 
          if (searchSettings.maxPage > 1) {
+            document.querySelector("#current-page-number").textContent = searchSettings.page;
+            document.querySelector("#total-pages-number").textContent = searchSettings.maxPage;
             document.querySelector("#pagination-btns").classList.remove('d-none');
          }
 
@@ -183,7 +185,7 @@ function search(myInput) {
 
                const fillerImgTextYear = document.createElement('div');
                fillerImgTextYear.classList.add('fs-6', 'text-muted', 'pb-1');
-               fillerImgTextYear.textContent = showData.release_date || showData.first_air_date || 'No release date available';
+               fillerImgTextYear.textContent = convertDate(showData.release_date || showData.first_air_date);
                fillerImgText.appendChild(fillerImgTextYear);
 
                const fillerImgTextOverview = document.createElement('div');
@@ -205,13 +207,13 @@ function search(myInput) {
             }
 
             cardDiv.addEventListener('click', () => {
-               fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers` : `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`, options)
+               fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers` : `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`, fetchSettings)
                   .then(res => {
                      if (!res.ok) { throw new Error('Network response was not ok'); }
                      else { return res.json(); }
                   })
                   .then(providerData => {
-                     fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/genre/movie/list?language=en` : `https://api.themoviedb.org/3/genre/tv/list?language=en`, options)
+                     fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/genre/movie/list?language=en` : `https://api.themoviedb.org/3/genre/tv/list?language=en`, fetchSettings)
                         .then(res => {
                            if (!res.ok) { throw new Error('Network response was not ok'); }
                            else { return res.json(); }
@@ -226,7 +228,7 @@ function search(myInput) {
                            });
 
                            document.querySelector("#show-title").textContent = showData.title || showData.name || showData.original_title || showData.original_name;
-                           document.querySelector("#show-release-date").textContent = showData.release_date || showData.first_air_date || 'No release date available';
+                           document.querySelector("#show-release-date").textContent = convertDate(showData.release_date || showData.first_air_date);
                            document.querySelector("#show-description").textContent = showData.overview || 'No overview available';
                            document.querySelector("#show-genres").textContent = genres.join(", ") || 'No genres available';
                            document.querySelector("#show-rating").textContent = parseFloat(showData.vote_average).toFixed(1) || 'No rating available';
@@ -266,9 +268,13 @@ function search(myInput) {
 
                               if (regionProviderData.buy) {
                                  for (const provider of regionProviderData.buy) {
+                                    const itemContainer = document.createElement('div');
+                                    itemContainer.classList.add('bg-dark-subtle', 'p-2', 'rounded-3', 'mt-2', 'text-center');
                                     const name = document.createElement('p');
+                                    name.classList.add('m-0', 'fw-bold');
                                     name.textContent = provider.provider_name;
-                                    buyOutputDiv.appendChild(name);
+                                    itemContainer.appendChild(name);
+                                    buyOutputDiv.appendChild(itemContainer);
                                  }
                                  buyTab.classList.remove("d-none");
                                  availableSections.buy = true;
@@ -276,9 +282,13 @@ function search(myInput) {
 
                               if (regionProviderData.rent) {
                                  for (const provider of regionProviderData.rent) {
+                                    const itemContainer = document.createElement('div');
+                                    itemContainer.classList.add('bg-dark-subtle', 'p-2', 'rounded-3', 'mt-2', 'text-center');
                                     const name = document.createElement('p');
+                                    name.classList.add('m-0', 'fw-bold');
                                     name.textContent = provider.provider_name;
-                                    rentOutputDiv.appendChild(name);
+                                    itemContainer.appendChild(name);
+                                    rentOutputDiv.appendChild(itemContainer);
                                  }
                                  rentTab.classList.remove("d-none");
                                  availableSections.rent = true;
@@ -286,9 +296,13 @@ function search(myInput) {
 
                               if (regionProviderData.flatrate) {
                                  for (const provider of regionProviderData.flatrate) {
+                                    const itemContainer = document.createElement('div');
+                                    itemContainer.classList.add('bg-dark-subtle', 'p-2', 'rounded-3', 'mt-2', 'text-center');
                                     const name = document.createElement('p');
+                                    name.classList.add('m-0', 'fw-bold');
                                     name.textContent = provider.provider_name;
-                                    streamOutputDiv.appendChild(name);
+                                    itemContainer.appendChild(name);
+                                    streamOutputDiv.appendChild(itemContainer);
                                  }
                                  streamTab.classList.remove("d-none");
                                  availableSections.stream = true;
@@ -296,9 +310,13 @@ function search(myInput) {
 
                               if (regionProviderData.free) {
                                  for (const provider of regionProviderData.free) {
+                                    const itemContainer = document.createElement('div');
+                                    itemContainer.classList.add('bg-dark-subtle', 'p-2', 'rounded-3', 'mt-2', 'text-center');
                                     const name = document.createElement('p');
+                                    name.classList.add('m-0', 'fw-bold');
                                     name.textContent = provider.provider_name;
-                                    freeStreamOutputDiv.appendChild(name);
+                                    itemContainer.appendChild(name);
+                                    freeStreamOutputDiv.appendChild(itemContainer);
                                  }
                                  freeStreamTab.classList.remove("d-none");
                                  availableSections.freeStream = true;
@@ -353,4 +371,15 @@ function getRegion() {
    const region = navigator.language;
    if (!re.test(region)) { return 'GB'; }
    return re.exec(region)[5];
+}
+
+/**
+ * Converts the date to a readable format
+ * @param {String} date The date to convert
+ * @returns {String} The date in a readable format 
+ */
+function convertDate(date) {
+   const dateObj = new Date(date);
+   if (dateObj == 'Invalid Date') { return 'No release date available'; }
+   return dateObj.toLocaleDateString(new Intl.DateTimeFormat(navigator.language).resolvedOptions().locale);
 }
