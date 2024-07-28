@@ -1,5 +1,10 @@
 /* Backdrop filter */
 .backdrop-filter-blur-20 {
-   -webkit-backdrop-filter: blur(20px);
-   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(100px);
+   backdrop-filter: blur(100px);
+}
+
+/* Clickable */
+.clickable {
+   cursor: pointer;
 }

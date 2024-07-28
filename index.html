@@ -118,14 +118,14 @@
                <div class="modal-body">
                   <div class="input-group">
                      <label class="input-group-text" for="adult-items-settings">Adult items</label>
-                     <select class="form-select" id="adult-items-settings">
+                     <select class="form-select clickable" id="adult-items-settings">
                         <option value="false" selected>No</option>
                         <option value="true">Yes</option>
                      </select>
                   </div>
                   <div class="input-group mt-3">
                      <label class="input-group-text" for="region-settings">Region</label>
-                     <select class="form-select" id="region-settings">
+                     <select class="form-select clickable" id="region-settings">
                         <option value="AD">AD</option>
                         <option value="AE">AE</option>
                         <option value="AG">AG</option>
@@ -285,22 +285,20 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
-
                   <h4>Release date:</h4>
                   <p id="show-release-date" class="text-muted"></p>
-
-                  <h4>Overview:</h4>
-                  <p id="show-description" class="text-muted"></p>
-
-                  <h4>Genres:</h4>
-                  <p id="show-genres" class="text-muted"></p>
-
+                  <hr>
                   <h4>Average rating:</h4>
                   <div>
                      <p id="show-rating" class="text-muted d-inline"></p>
                      <i class="bi bi-star-fill text-muted d-inline"></i>
                   </div>
-
+                  <hr>
+                  <h4>Genres:</h4>
+                  <p id="show-genres" class="text-muted"></p>
+                  <hr>
+                  <h4>Overview:</h4>
+                  <p id="show-description" class="text-muted"></p>
                   <div id="where-to-watch">
                      <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
                         <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist"

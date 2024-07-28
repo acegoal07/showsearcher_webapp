@@ -54,23 +54,21 @@ window.addEventListener('load', function () {
    myInput.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
       searchSettings.page = 1;
-      if (myInput.value) {
-         typingTimer = setTimeout(() => search(myInput.value.trim()), 200);
-      }
+      typingTimer = setTimeout(() => search(myInput.value.trim()), 200);
    });
 
    // Add event listener to switch to movies button
    document.querySelector("#select-movies").addEventListener('click', () => {
       searchSettings.movieOrTv = 0;
       searchSettings.page = 1;
-      search(myInput.value.trim());
+      search(myInput.value);
    });
 
    // Add event listener to switch to tv shows button
    document.querySelector("#select-tv-shows").addEventListener('click', () => {
       searchSettings.movieOrTv = 1;
       searchSettings.page = 1;
-      search(myInput.value.trim());
+      search(myInput.value);
    });
 
    // Add event listener to pagination previous button
@@ -132,8 +130,8 @@ window.addEventListener('load', function () {
 function search(myInput) {
    document.querySelector("#search-results").innerHTML = '';
    document.querySelector("#pagination-btns").classList.add('d-none');
-   if (!myInput) { return; }
    document.querySelector("#no-result-error").classList.add('d-none');
+   if (!myInput) { return; }
    document.querySelector("#loading-spinner").classList.remove('d-none');
 
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, fetchSettings)
@@ -156,7 +154,7 @@ function search(myInput) {
             colDiv.classList.add('col');
 
             const cardDiv = document.createElement('div');
-            cardDiv.classList.add('card', 'bg-body-tertiary', 'justify-content-center', 'h-100', 'shadow-lg', 'border-0');
+            cardDiv.classList.add('card', 'bg-body-tertiary', 'justify-content-center', 'h-100', 'shadow-lg', 'border-0', 'clickable');
             colDiv.appendChild(cardDiv);
 
             if (showData.poster_path) {
