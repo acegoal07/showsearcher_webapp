@@ -374,7 +374,7 @@ function getRegion() {
 /**
  * Converts the date to a readable format
  * @param {String} date The date to convert
- * @returns {String} The date in a readable format 
+ * @returns {String} The date in a readable format
  */
 function convertDate(date) {
    const dateObj = new Date(date);
