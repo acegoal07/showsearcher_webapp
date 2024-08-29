@@ -1,5 +1,5 @@
-# showsearcher_webApp
-A Web app for TMBD database
+# showsearcher_webapp
+A Web app for TMBD
 
 # What i want to add
 - Ratings of shows and films from across multiple rating sites
