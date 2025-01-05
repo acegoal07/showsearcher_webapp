@@ -108,7 +108,7 @@
             data-bs-target="#searchSettings" aria-label="search settings"></button>
       </div>
 
-      <div class="modal fade backdrop-filter-blur-20" id="searchSettings" data-bs-backdrop="static"
+      <div class="modal fade backdrop-filter-blur" id="searchSettings" data-bs-backdrop="static"
          data-bs-keyboard="false" tabindex="-1" aria-labelledby="searchSettingsLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -277,12 +277,12 @@
          </div>
       </div>
 
-      <div class="modal fade backdrop-filter-blur-20" id="showData" data-bs-backdrop="static" data-bs-keyboard="false"
+      <div class="modal fade backdrop-filter-blur" id="showData" data-bs-backdrop="static" data-bs-keyboard="false"
          tabindex="-1" aria-labelledby="showDataLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                <div class="modal-header">
-                  <h3 id="show-title"></h3>
+                  <h3 id="show-title" aria-live="polite">Show Title</h3>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">

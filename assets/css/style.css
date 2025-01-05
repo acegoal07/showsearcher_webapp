@@ -1,5 +1,5 @@
 /* Backdrop filter */
-.backdrop-filter-blur-20 {
+.backdrop-filter-blur {
    -webkit-backdrop-filter: blur(100px);
    backdrop-filter: blur(100px);
 }
