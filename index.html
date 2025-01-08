@@ -9,13 +9,17 @@
    <meta name="description" content="The show searcher tool">
    <meta name="author" content="acegoal07">
    <link rel="stylesheet" href="https://acegoal07.dev/assets/css/bootstrap.min.css">
-   <script src="https://acegoal07.dev/assets/js/index-min.js"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
    <link rel="stylesheet" href="https://acegoal07.dev/assets/css/style-min.css">
    <link rel="stylesheet" href="assets/css/style-min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"
+      integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj+KsslFkCOt3TvJrX2AV/Gc3wOqA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://acegoal07.dev/assets/js/bootstrap.bundle.min.js"></script>
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js" integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj+KsslFkCOt3TvJrX2AV/Gc3wOqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="assets/js/searcher-min.js"></script>
+   <script src="https://acegoal07.dev/assets/js/index-min.js"></script>
+   <script src="assets/js/utils-min.js"></script>
+   <script src="assets/js/search-min.js"></script>
+   <script src="assets/js/page-min.js"></script>
 </head>
 
 <body class="bg-dark-subtle">
@@ -305,13 +309,14 @@
                         <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist"
                            id="where-to-watch-tabs">
                            <a class="nav-link border border-primary active" id="buy-tab" data-bs-toggle="tab"
-                              data-bs-target="#buy-section" type="button" role="tab">Buy</a>
+                              data-bs-target="#buy-section" target="buy" type="button" role="tab">Buy</a>
                            <a class="nav-link border border-primary" id="rent-tab" data-bs-toggle="tab"
-                              data-bs-target="#rent-section" type="button" role="tab">Rent</a>
+                              data-bs-target="#rent-section" target="rent" type="button" role="tab">Rent</a>
                            <a class="nav-link border border-primary" id="stream-tab" data-bs-toggle="tab"
-                              data-bs-target="#stream-section" type="button" role="tab">Stream</a>
+                              data-bs-target="#stream-section" target="stream" type="button" role="tab">Stream</a>
                            <a class="nav-link border border-primary" id="free-stream-tab" data-bs-toggle="tab"
-                              data-bs-target="#free-stream-section" type="button" role="tab">Free</a>
+                              data-bs-target="#free-stream-section" target="freeStream" type="button"
+                              role="tab">Free</a>
                         </div>
                         <p class="text-center mt-2 mb-0 p-0">The region can be changed in the settings</p>
                         <div class="text-center">
