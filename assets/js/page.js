@@ -50,18 +50,14 @@ window.addEventListener('load', function () {
       typingTimer = setTimeout(() => search(myInput.value.trim()), 200);
    });
 
-   // Add event listener to switch to movies button
-   document.querySelector("#select-movies").addEventListener('click', () => {
-      searchSettings.movieOrTv = 0;
-      searchSettings.page = 1;
-      search(myInput.value);
-   });
-
-   // Add event listener to switch to tv shows button
-   document.querySelector("#select-tv-shows").addEventListener('click', () => {
-      searchSettings.movieOrTv = 1;
-      searchSettings.page = 1;
-      search(myInput.value);
+   // Add event listener to switch show type buttons
+   document.querySelectorAll("#show-type-switch a").forEach(button => {
+      button.addEventListener('click', () => {
+         const showType = button.getAttribute('show-type') == 'movies' ? 0 : 1;
+         if (searchSettings.movieOrTv == showType) { return; }
+         searchSettings.movieOrTv = showType;
+         search(myInput.value.trim());
+      });
    });
 
    // Add event listener to pagination previous button
