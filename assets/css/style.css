@@ -8,3 +8,16 @@
 .clickable {
    cursor: pointer;
 }
+
+/* Placeholder */
+div.placeholder-card-img {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+}
+
+div.placeholder-card-img-text {
+   position: absolute;
+   width: 90%;
+}

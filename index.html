@@ -8,22 +8,15 @@
    <link rel="shortcut icon" href="https://acegoal07.dev/assets/images/favicon.ico">
    <meta name="description" content="The show searcher tool">
    <meta name="author" content="acegoal07">
-   <link rel="stylesheet" href="https://acegoal07.dev/assets/css/bootstrap.min.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-   <link rel="stylesheet" href="https://acegoal07.dev/assets/css/style-min.css">
+   <link rel="stylesheet" href="https://acegoal07.dev/assets/css/bootstrap-min.css">
    <link rel="stylesheet" href="assets/css/style-min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js"
-      integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj+KsslFkCOt3TvJrX2AV/Gc3wOqA=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://acegoal07.dev/assets/js/bootstrap.bundle.min.js"></script>
-   <script src="https://acegoal07.dev/assets/js/index-min.js"></script>
-   <script src="assets/js/utils-min.js"></script>
-   <script src="assets/js/search-min.js"></script>
-   <script src="assets/js/page-min.js"></script>
+   <script src="https://acegoal07.dev/assets/js/bootstrap-min.js" defer></script>
+   <script src="https://acegoal07.dev/assets/js/jQuery-min.js"></script>
 </head>
 
-<body class="bg-dark-subtle">
-   <nav class="navbar sticky-top navbar-expand-md bg-body-tertiary pb-3" aria-label="Projects navbar">
+<body class="min-vh-100 d-flex flex-column bg-dark-subtle">
+   <a href="#main-content" class="visually-hidden-focusable skip-link">Skip to main content</a>
+   <nav class="navbar sticky-top navbar-expand-md bg-body-tertiary pb-3" aria-label="Main navigation" role="navigation">
       <div class="container">
          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
             aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,20 +26,21 @@
             <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                <li class="nav-item"><a class="nav-link" href="/">Homepage</a></li>
                <li class="nav-item"><a class="nav-link" href="/projects/">Projects</a></li>
-               <li class="nav-item"><a class="nav-link" href="/donate.html">Donate</a></li>
-               <li class="nav-item"><a class="nav-link active" href="#">ShowSearcher</a></li>
+               <li class="nav-item"><a class="nav-link" href="donate.html">Donate</a></li>
+               <li class="nav-item"><a class="nav-link active" href="#" aria-current="page">ShowSearcher</a></li>
             </ul>
             <ul class="navbar-nav ms-auto">
                <li class="nav-item dropdown">
                   <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
                      id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown"
-                     data-bs-display="static" aria-label="Toggle theme (light)">
+                     data-bs-display="static" aria-label="Toggle theme (light)" aria-haspopup="true"
+                     aria-controls="theme-dropdown">
                      <svg class="bi my-1 theme-icon-active">
                         <use href="#sun-fill"></use>
                      </svg>
                      <span class="d-md-none d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                  <ul class="dropdown-menu dropdown-menu-end shadow" id="theme-dropdown">
                      <li>
                         <button type="button" class="dropdown-item d-flex align-items-center active"
                            data-bs-theme-value="light" aria-pressed="true">
@@ -90,14 +84,15 @@
       </div>
    </nav>
 
-   <main class="container">
-
+   <header class="container" role="banner">
       <div class="p-5 mt-3 mb-3 bg-body-tertiary rounded-3 shadow">
          <h1 class="display-5 fw-bold">ShowSearcher</h1>
          <p class="col-md-8 fs-6">Search for shows and movies and find all the information you need</p>
       </div>
+   </header>
 
-      <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow mb-3">
+   <main class="container flex-grow-1" role="main" id="main-content">
+      <div class="card bg-body-tertiary p-3 border-0 shadow mb-3">
          <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist" id="show-type-switch">
             <a class="nav-link border border-primary active" data-bs-toggle="tab" type="button" role="tab"
                show-type="movies">Movies</a>
@@ -111,252 +106,6 @@
             aria-describedby="inputGroup-sizing-lg" placeholder="Search" aria-placeholder="Search" id="search-input">
          <button type="button" class="btn btn-primary bi bi-sliders" data-bs-toggle="modal"
             data-bs-target="#searchSettings" aria-label="search settings"></button>
-      </div>
-
-      <div class="modal fade backdrop-filter-blur" id="searchSettings" data-bs-backdrop="static"
-         data-bs-keyboard="false" tabindex="-1" aria-labelledby="searchSettingsLabel" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="searchSettingsLabel">Search Settings</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                  <div class="input-group">
-                     <label class="input-group-text" for="adult-items-settings">Adult items</label>
-                     <select class="form-select clickable" id="adult-items-settings">
-                        <option value="false" selected>No</option>
-                        <option value="true">Yes</option>
-                     </select>
-                  </div>
-                  <div class="input-group mt-3">
-                     <label class="input-group-text" for="region-settings">Region</label>
-                     <select class="form-select clickable" id="region-settings">
-                        <option value="AD">AD</option>
-                        <option value="AE">AE</option>
-                        <option value="AG">AG</option>
-                        <option value="AL">AL</option>
-                        <option value="AO">AO</option>
-                        <option value="AR">AR</option>
-                        <option value="AT">AT</option>
-                        <option value="AU">AU</option>
-                        <option value="AZ">AZ</option>
-                        <option value="BA">BA</option>
-                        <option value="BB">BB</option>
-                        <option value="BE">BE</option>
-                        <option value="BF">BF</option>
-                        <option value="BG">BG</option>
-                        <option value="BH">BH</option>
-                        <option value="BM">BM</option>
-                        <option value="BO">BO</option>
-                        <option value="BR">BR</option>
-                        <option value="BS">BS</option>
-                        <option value="BY">BY</option>
-                        <option value="BZ">BZ</option>
-                        <option value="CA">CA</option>
-                        <option value="CD">CD</option>
-                        <option value="CH">CH</option>
-                        <option value="CI">CI</option>
-                        <option value="CL">CL</option>
-                        <option value="CM">CM</option>
-                        <option value="CO">CO</option>
-                        <option value="CR">CR</option>
-                        <option value="CU">CU</option>
-                        <option value="CV">CV</option>
-                        <option value="CY">CY</option>
-                        <option value="CZ">CZ</option>
-                        <option value="DE">DE</option>
-                        <option value="DK">DK</option>
-                        <option value="DO">DO</option>
-                        <option value="DZ">DZ</option>
-                        <option value="EC">EC</option>
-                        <option value="EE">EE</option>
-                        <option value="EG">EG</option>
-                        <option value="ES">ES</option>
-                        <option value="FI">FI</option>
-                        <option value="FJ">FJ</option>
-                        <option value="FR">FR</option>
-                        <option value="GB">GB</option>
-                        <option value="GF">GF</option>
-                        <option value="GH">GH</option>
-                        <option value="GI">GI</option>
-                        <option value="GP">GP</option>
-                        <option value="GQ">GQ</option>
-                        <option value="GR">GR</option>
-                        <option value="GT">GT</option>
-                        <option value="GY">GY</option>
-                        <option value="HK">HK</option>
-                        <option value="HN">HN</option>
-                        <option value="HR">HR</option>
-                        <option value="HU">HU</option>
-                        <option value="ID">ID</option>
-                        <option value="IE">IE</option>
-                        <option value="IL">IL</option>
-                        <option value="IN">IN</option>
-                        <option value="IQ">IQ</option>
-                        <option value="IS">IS</option>
-                        <option value="IT">IT</option>
-                        <option value="JM">JM</option>
-                        <option value="JO">JO</option>
-                        <option value="JP">JP</option>
-                        <option value="KE">KE</option>
-                        <option value="KR">KR</option>
-                        <option value="KW">KW</option>
-                        <option value="LB">LB</option>
-                        <option value="LC">LC</option>
-                        <option value="LI">LI</option>
-                        <option value="LT">LT</option>
-                        <option value="LU">LU</option>
-                        <option value="LV">LV</option>
-                        <option value="LY">LY</option>
-                        <option value="MA">MA</option>
-                        <option value="MC">MC</option>
-                        <option value="MD">MD</option>
-                        <option value="ME">ME</option>
-                        <option value="MG">MG</option>
-                        <option value="MK">MK</option>
-                        <option value="ML">ML</option>
-                        <option value="MT">MT</option>
-                        <option value="MU">MU</option>
-                        <option value="MW">MW</option>
-                        <option value="MX">MX</option>
-                        <option value="MY">MY</option>
-                        <option value="MZ">MZ</option>
-                        <option value="NE">NE</option>
-                        <option value="NG">NG</option>
-                        <option value="NI">NI</option>
-                        <option value="NL">NL</option>
-                        <option value="NO">NO</option>
-                        <option value="NZ">NZ</option>
-                        <option value="OM">OM</option>
-                        <option value="PA">PA</option>
-                        <option value="PE">PE</option>
-                        <option value="PF">PF</option>
-                        <option value="PG">PG</option>
-                        <option value="PH">PH</option>
-                        <option value="PK">PK</option>
-                        <option value="PL">PL</option>
-                        <option value="PS">PS</option>
-                        <option value="PT">PT</option>
-                        <option value="PY">PY</option>
-                        <option value="QA">QA</option>
-                        <option value="RO">RO</option>
-                        <option value="RS">RS</option>
-                        <option value="RU">RU</option>
-                        <option value="SA">SA</option>
-                        <option value="SC">SC</option>
-                        <option value="SE">SE</option>
-                        <option value="SG">SG</option>
-                        <option value="SI">SI</option>
-                        <option value="SK">SK</option>
-                        <option value="SM">SM</option>
-                        <option value="SN">SN</option>
-                        <option value="SV">SV</option>
-                        <option value="TC">TC</option>
-                        <option value="TD">TD</option>
-                        <option value="TH">TH</option>
-                        <option value="TN">TN</option>
-                        <option value="TR">TR</option>
-                        <option value="TT">TT</option>
-                        <option value="TW">TW</option>
-                        <option value="TZ">TZ</option>
-                        <option value="UA">UA</option>
-                        <option value="UG">UG</option>
-                        <option value="US">US</option>
-                        <option value="UY">UY</option>
-                        <option value="VA">VA</option>
-                        <option value="VE">VE</option>
-                        <option value="XK">XK</option>
-                        <option value="YE">YE</option>
-                        <option value="ZA">ZA</option>
-                        <option value="ZM">ZM</option>
-                        <option value="ZW">ZW</option>
-                     </select>
-                  </div>
-               </div>
-               <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" id="reset-settings">Reset</button>
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-               </div>
-            </div>
-         </div>
-      </div>
-
-      <div class="modal fade backdrop-filter-blur" id="showData" data-bs-backdrop="static" data-bs-keyboard="false"
-         tabindex="-1" aria-labelledby="showDataLabel" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h3 id="show-title" aria-live="polite">Show Title</h3>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                  <h4>Release date:</h4>
-                  <p id="show-release-date" class="text-muted"></p>
-                  <hr>
-                  <h4>Average rating:</h4>
-                  <div>
-                     <p id="show-rating" class="text-muted d-inline"></p>
-                     <i class="bi bi-star-fill text-muted d-inline"></i>
-                  </div>
-                  <hr>
-                  <h4>Genres:</h4>
-                  <p id="show-genres" class="text-muted"></p>
-                  <hr>
-                  <h4>Overview:</h4>
-                  <p id="show-description" class="text-muted"></p>
-                  <div id="where-to-watch">
-                     <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
-                        <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist"
-                           id="where-to-watch-tabs">
-                           <a class="nav-link border border-primary active" id="buy-tab" data-bs-toggle="tab"
-                              data-bs-target="#buy-section" target="buy" type="button" role="tab">Buy</a>
-                           <a class="nav-link border border-primary" id="rent-tab" data-bs-toggle="tab"
-                              data-bs-target="#rent-section" target="rent" type="button" role="tab">Rent</a>
-                           <a class="nav-link border border-primary" id="stream-tab" data-bs-toggle="tab"
-                              data-bs-target="#stream-section" target="stream" type="button" role="tab">Stream</a>
-                           <a class="nav-link border border-primary" id="free-stream-tab" data-bs-toggle="tab"
-                              data-bs-target="#free-stream-section" target="freeStream" type="button"
-                              role="tab">Free</a>
-                        </div>
-                        <p class="text-center mt-2 mb-0 p-0">The region can be changed in the settings</p>
-                        <div class="text-center">
-                           <p class="d-inline">Current region:</p>
-                           <p class="d-inline fw-bold text-primary" id="region-display">GB</p>
-                        </div>
-                     </div>
-
-                     <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
-                        <div class="tab-content" id="WhereToWatchTabs">
-
-                           <div class="tab-pane show active" id="buy-section" role="tabpanel" aria-labelledby="buy-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to Buy:</h2>
-                              <div id="buy-output"></div>
-                           </div>
-
-                           <div class="tab-pane" id="rent-section" role="tabpanel" aria-labelledby="rent-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to Rent:</h2>
-                              <div id="rent-output"></div>
-                           </div>
-
-                           <div class="tab-pane" id="stream-section" role="tabpanel" aria-labelledby="stream-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to Stream:</h2>
-                              <div id="stream-output"></div>
-                           </div>
-
-                           <div class="tab-pane" id="free-stream-section" role="tabpanel"
-                              aria-labelledby="free-stream-tab">
-                              <h2 class="text-center pt-1 fw-bold card-title">Where to stream for free:</h2>
-                              <div id="free-stream-output"></div>
-                           </div>
-
-                        </div>
-                     </div>
-                  </div>
-
-               </div>
-            </div>
-         </div>
       </div>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
@@ -384,14 +133,263 @@
             </li>
          </ul>
       </div>
+
+      <script src="assets/js/utils-min.js" defer></script>
+      <script src="assets/js/search-min.js" defer></script>
+      <script src="assets/js/page-min.js" defer></script>
    </main>
 
-   <footer class="container mt-3 text-center">
+   <footer class="container mt-3 text-center" aria-label="Footer">
       <hr>
       <a class="btn btn-primary mt-1" href="#">To the top</a>
       <p class="mt-3">Website built using <a href="https://getbootstrap.com/" class="text-primary-emphasis"
             target="_blank" rel="noopener">Bootstrap</a>, by acegoal07</p>
    </footer>
+
+   <div class="modal fade backdrop-filter-blur" id="searchSettings" data-bs-backdrop="static" data-bs-keyboard="false"
+      tabindex="-1" aria-labelledby="searchSettingsLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h1 class="modal-title fs-5" id="searchSettingsLabel">Search Settings</h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="input-group">
+                  <label class="input-group-text" for="adult-items-settings">Adult items</label>
+                  <select class="form-select clickable" id="adult-items-settings">
+                     <option value="false" selected>No</option>
+                     <option value="true">Yes</option>
+                  </select>
+               </div>
+               <div class="input-group mt-3">
+                  <label class="input-group-text" for="region-settings">Region</label>
+                  <select class="form-select clickable" id="region-settings">
+                     <option value="AD">AD</option>
+                     <option value="AE">AE</option>
+                     <option value="AG">AG</option>
+                     <option value="AL">AL</option>
+                     <option value="AO">AO</option>
+                     <option value="AR">AR</option>
+                     <option value="AT">AT</option>
+                     <option value="AU">AU</option>
+                     <option value="AZ">AZ</option>
+                     <option value="BA">BA</option>
+                     <option value="BB">BB</option>
+                     <option value="BE">BE</option>
+                     <option value="BF">BF</option>
+                     <option value="BG">BG</option>
+                     <option value="BH">BH</option>
+                     <option value="BM">BM</option>
+                     <option value="BO">BO</option>
+                     <option value="BR">BR</option>
+                     <option value="BS">BS</option>
+                     <option value="BY">BY</option>
+                     <option value="BZ">BZ</option>
+                     <option value="CA">CA</option>
+                     <option value="CD">CD</option>
+                     <option value="CH">CH</option>
+                     <option value="CI">CI</option>
+                     <option value="CL">CL</option>
+                     <option value="CM">CM</option>
+                     <option value="CO">CO</option>
+                     <option value="CR">CR</option>
+                     <option value="CU">CU</option>
+                     <option value="CV">CV</option>
+                     <option value="CY">CY</option>
+                     <option value="CZ">CZ</option>
+                     <option value="DE">DE</option>
+                     <option value="DK">DK</option>
+                     <option value="DO">DO</option>
+                     <option value="DZ">DZ</option>
+                     <option value="EC">EC</option>
+                     <option value="EE">EE</option>
+                     <option value="EG">EG</option>
+                     <option value="ES">ES</option>
+                     <option value="FI">FI</option>
+                     <option value="FJ">FJ</option>
+                     <option value="FR">FR</option>
+                     <option value="GB">GB</option>
+                     <option value="GF">GF</option>
+                     <option value="GH">GH</option>
+                     <option value="GI">GI</option>
+                     <option value="GP">GP</option>
+                     <option value="GQ">GQ</option>
+                     <option value="GR">GR</option>
+                     <option value="GT">GT</option>
+                     <option value="GY">GY</option>
+                     <option value="HK">HK</option>
+                     <option value="HN">HN</option>
+                     <option value="HR">HR</option>
+                     <option value="HU">HU</option>
+                     <option value="ID">ID</option>
+                     <option value="IE">IE</option>
+                     <option value="IL">IL</option>
+                     <option value="IN">IN</option>
+                     <option value="IQ">IQ</option>
+                     <option value="IS">IS</option>
+                     <option value="IT">IT</option>
+                     <option value="JM">JM</option>
+                     <option value="JO">JO</option>
+                     <option value="JP">JP</option>
+                     <option value="KE">KE</option>
+                     <option value="KR">KR</option>
+                     <option value="KW">KW</option>
+                     <option value="LB">LB</option>
+                     <option value="LC">LC</option>
+                     <option value="LI">LI</option>
+                     <option value="LT">LT</option>
+                     <option value="LU">LU</option>
+                     <option value="LV">LV</option>
+                     <option value="LY">LY</option>
+                     <option value="MA">MA</option>
+                     <option value="MC">MC</option>
+                     <option value="MD">MD</option>
+                     <option value="ME">ME</option>
+                     <option value="MG">MG</option>
+                     <option value="MK">MK</option>
+                     <option value="ML">ML</option>
+                     <option value="MT">MT</option>
+                     <option value="MU">MU</option>
+                     <option value="MW">MW</option>
+                     <option value="MX">MX</option>
+                     <option value="MY">MY</option>
+                     <option value="MZ">MZ</option>
+                     <option value="NE">NE</option>
+                     <option value="NG">NG</option>
+                     <option value="NI">NI</option>
+                     <option value="NL">NL</option>
+                     <option value="NO">NO</option>
+                     <option value="NZ">NZ</option>
+                     <option value="OM">OM</option>
+                     <option value="PA">PA</option>
+                     <option value="PE">PE</option>
+                     <option value="PF">PF</option>
+                     <option value="PG">PG</option>
+                     <option value="PH">PH</option>
+                     <option value="PK">PK</option>
+                     <option value="PL">PL</option>
+                     <option value="PS">PS</option>
+                     <option value="PT">PT</option>
+                     <option value="PY">PY</option>
+                     <option value="QA">QA</option>
+                     <option value="RO">RO</option>
+                     <option value="RS">RS</option>
+                     <option value="RU">RU</option>
+                     <option value="SA">SA</option>
+                     <option value="SC">SC</option>
+                     <option value="SE">SE</option>
+                     <option value="SG">SG</option>
+                     <option value="SI">SI</option>
+                     <option value="SK">SK</option>
+                     <option value="SM">SM</option>
+                     <option value="SN">SN</option>
+                     <option value="SV">SV</option>
+                     <option value="TC">TC</option>
+                     <option value="TD">TD</option>
+                     <option value="TH">TH</option>
+                     <option value="TN">TN</option>
+                     <option value="TR">TR</option>
+                     <option value="TT">TT</option>
+                     <option value="TW">TW</option>
+                     <option value="TZ">TZ</option>
+                     <option value="UA">UA</option>
+                     <option value="UG">UG</option>
+                     <option value="US">US</option>
+                     <option value="UY">UY</option>
+                     <option value="VA">VA</option>
+                     <option value="VE">VE</option>
+                     <option value="XK">XK</option>
+                     <option value="YE">YE</option>
+                     <option value="ZA">ZA</option>
+                     <option value="ZM">ZM</option>
+                     <option value="ZW">ZW</option>
+                  </select>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-danger" id="reset-settings">Reset</button>
+               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="modal fade backdrop-filter-blur" id="showData" data-bs-backdrop="static" data-bs-keyboard="false"
+      tabindex="-1" aria-labelledby="showDataLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3 id="show-title" aria-live="polite">Show Title</h3>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <h4>Release date:</h4>
+               <p id="show-release-date" class="text-muted"></p>
+               <hr>
+               <h4>Average rating:</h4>
+               <div>
+                  <p id="show-rating" class="text-muted d-inline"></p>
+                  <i class="bi bi-star-fill text-muted d-inline"></i>
+               </div>
+               <hr>
+               <h4>Genres:</h4>
+               <p id="show-genres" class="text-muted"></p>
+               <hr>
+               <h4>Overview:</h4>
+               <p id="show-description" class="text-muted"></p>
+               <div id="where-to-watch">
+                  <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
+                     <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" role="tablist"
+                        id="where-to-watch-tabs">
+                        <a class="nav-link border border-primary active" id="buy-tab" data-bs-toggle="tab"
+                           data-bs-target="#buy-section" target="buy" type="button" role="tab">Buy</a>
+                        <a class="nav-link border border-primary" id="rent-tab" data-bs-toggle="tab"
+                           data-bs-target="#rent-section" target="rent" type="button" role="tab">Rent</a>
+                        <a class="nav-link border border-primary" id="stream-tab" data-bs-toggle="tab"
+                           data-bs-target="#stream-section" target="stream" type="button" role="tab">Stream</a>
+                        <a class="nav-link border border-primary" id="free-stream-tab" data-bs-toggle="tab"
+                           data-bs-target="#free-stream-section" target="freeStream" type="button" role="tab">Free</a>
+                     </div>
+                     <p class="text-center mt-2 mb-0 p-0">The region can be changed in the settings</p>
+                     <div class="text-center">
+                        <p class="d-inline">Current region:</p>
+                        <p class="d-inline fw-bold text-primary" id="region-display">GB</p>
+                     </div>
+                  </div>
+
+                  <div class="card bg-body-tertiary p-3 mt-3 border-0 shadow">
+                     <div class="tab-content" id="WhereToWatchTabs">
+
+                        <div class="tab-pane show active" id="buy-section" role="tabpanel" aria-labelledby="buy-tab">
+                           <h2 class="text-center pt-1 fw-bold card-title">Where to Buy:</h2>
+                           <div id="buy-output"></div>
+                        </div>
+
+                        <div class="tab-pane" id="rent-section" role="tabpanel" aria-labelledby="rent-tab">
+                           <h2 class="text-center pt-1 fw-bold card-title">Where to Rent:</h2>
+                           <div id="rent-output"></div>
+                        </div>
+
+                        <div class="tab-pane" id="stream-section" role="tabpanel" aria-labelledby="stream-tab">
+                           <h2 class="text-center pt-1 fw-bold card-title">Where to Stream:</h2>
+                           <div id="stream-output"></div>
+                        </div>
+
+                        <div class="tab-pane" id="free-stream-section" role="tabpanel"
+                           aria-labelledby="free-stream-tab">
+                           <h2 class="text-center pt-1 fw-bold card-title">Where to stream for free:</h2>
+                           <div id="free-stream-output"></div>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+   </div>
 </body>
 
 </html>
