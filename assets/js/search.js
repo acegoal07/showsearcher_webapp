@@ -16,6 +16,7 @@ function search(myInput) {
    document.querySelector("#no-result-error").classList.add('d-none');
    if (!myInput) { return; }
    document.querySelector("#loading-spinner").classList.remove('d-none');
+   document.querySelector("input#search-input").setAttribute("previous-search", myInput);
 
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, fetchSettings)
       .then(res => {
@@ -37,6 +38,8 @@ function search(myInput) {
             colDiv.classList.add('col');
 
             const cardDiv = document.createElement('div');
+            cardDiv.setAttribute('tabindex', '0');
+            cardDiv.id = `${showData.id}`;
             cardDiv.classList.add('card', 'bg-body-tertiary', 'justify-content-center', 'h-100', 'shadow-lg', 'border-0', 'clickable');
             colDiv.appendChild(cardDiv);
 
@@ -88,6 +91,16 @@ function search(myInput) {
             }
 
             cardDiv.addEventListener('click', () => {
+               showInfo();
+            });
+
+            cardDiv.addEventListener('keypress', (event) => {
+               if (event.key === 'Enter' || event.key === ' ') {
+                  showInfo();
+               }
+            });
+
+            function showInfo() {
                fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers` : `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`, fetchSettings)
                   .then(res => {
                      if (!res.ok) { throw new Error('Network response was not ok'); }
@@ -108,6 +121,7 @@ function search(myInput) {
                               }
                            });
 
+                           document.querySelector("#showData").setAttribute("target-card-id", showData.id);
                            document.querySelector("#show-title").textContent = showData.title || showData.name || showData.original_title || showData.original_name;
                            document.querySelector("#show-release-date").textContent = convertDate(showData.release_date || showData.first_air_date);
                            document.querySelector("#show-description").textContent = showData.overview || 'No overview available';
@@ -119,21 +133,25 @@ function search(myInput) {
 
                            const buyTab = document.querySelector("#buy-tab");
                            buyTab.classList.add("d-none");
+                           buyTab.classList.add("disabled");
                            const buyOutputDiv = document.querySelector("#buy-output");
                            buyOutputDiv.innerHTML = '';
 
                            const rentTab = document.querySelector("#rent-tab");
                            rentTab.classList.add("d-none");
+                           rentTab.classList.add("disabled");
                            const rentOutputDiv = document.querySelector("#rent-output");
                            rentOutputDiv.innerHTML = '';
 
                            const streamTab = document.querySelector("#stream-tab");
                            streamTab.classList.add("d-none");
+                           streamTab.classList.add("disabled");
                            const streamOutputDiv = document.querySelector("#stream-output");
                            streamOutputDiv.innerHTML = '';
 
                            const freeStreamTab = document.querySelector("#free-stream-tab");
                            freeStreamTab.classList.add("d-none");
+                           freeStreamTab.classList.add("disabled");
                            const freeStreamOutputDiv = document.querySelector("#free-stream-output");
                            freeStreamOutputDiv.innerHTML = '';
 
@@ -158,6 +176,7 @@ function search(myInput) {
                                     buyOutputDiv.appendChild(itemContainer);
                                  }
                                  buyTab.classList.remove("d-none");
+                                 buyTab.classList.remove("disabled");
                                  availableSections.buy = true;
                               }
 
@@ -172,6 +191,7 @@ function search(myInput) {
                                     rentOutputDiv.appendChild(itemContainer);
                                  }
                                  rentTab.classList.remove("d-none");
+                                 rentTab.classList.remove("disabled");
                                  availableSections.rent = true;
                               }
 
@@ -186,6 +206,7 @@ function search(myInput) {
                                     streamOutputDiv.appendChild(itemContainer);
                                  }
                                  streamTab.classList.remove("d-none");
+                                 streamTab.classList.remove("disabled");
                                  availableSections.stream = true;
                               }
 
@@ -200,6 +221,7 @@ function search(myInput) {
                                     freeStreamOutputDiv.appendChild(itemContainer);
                                  }
                                  freeStreamTab.classList.remove("d-none");
+                                 freeStreamTab.classList.remove("disabled");
                                  availableSections.freeStream = true;
                               }
 
@@ -220,7 +242,7 @@ function search(myInput) {
                         .catch(err => console.error('error:' + err));
                   })
                   .catch(err => console.error('error:' + err));
-            });
+            }
 
             searchResults.appendChild(colDiv);
          });

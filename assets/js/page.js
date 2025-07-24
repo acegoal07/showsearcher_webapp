@@ -46,19 +46,37 @@ window.addEventListener('load', function () {
    let typingTimer;
    myInput.addEventListener('keyup', () => {
       clearTimeout(typingTimer);
+      if (myInput.value.trim() === document.querySelector("input#search-input").getAttribute("previous-search")) { return; }
       searchSettings.page = 1;
       typingTimer = setTimeout(() => search(myInput.value.trim()), 200);
    });
 
-   // Add event listener to switch show type buttons
-   document.querySelectorAll("#show-type-switch a").forEach(button => {
+   // Add event listener to switch show type buttons and keyboard navigation
+   const showTypeButtons = document.querySelectorAll("#show-type-switch button");
+   showTypeButtons.forEach((button, idx) => {
       button.addEventListener('click', () => {
-         const showType = button.getAttribute('show-type') == 'movies' ? 0 : 1;
-         if (searchSettings.movieOrTv == showType) { return; }
-         searchSettings.movieOrTv = showType;
-         search(myInput.value.trim());
+         updateShowTypeTab(idx);
+      });
+      showTypeButtons.forEach((button, idx) => {
+         button.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+               const nextIdx = idx === 0 ? 1 : 0;
+               updateShowTypeTab(button, nextIdx);
+            } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+               const prevIdx = idx === 0 ? 1 : 0;
+               updateShowTypeTab(button, prevIdx);
+            }
+         });
       });
    });
+
+   function updateShowTypeTab(button, activeIdx) {
+      if (button.idx === activeIdx && button.classList.contains('active')) { return; }
+      const showType = showTypeButtons[activeIdx].getAttribute('show-type') == 'movies' ? 0 : 1;
+      if (searchSettings.movieOrTv == showType) { return; }
+      searchSettings.movieOrTv = showType;
+      search(myInput.value.trim());
+   }
 
    // Add event listener to pagination previous button
    document.querySelector("#pagination-back-btn").addEventListener('click', () => {
@@ -68,6 +86,7 @@ window.addEventListener('load', function () {
       } else {
          searchSettings.page--;
       }
+      document.querySelector("input#search-input").focus();
       search(myInput.value.trim());
    });
 
@@ -79,11 +98,13 @@ window.addEventListener('load', function () {
       } else {
          searchSettings.page++;
       }
+      document.querySelector("input#search-input").focus();
       search(myInput.value.trim());
    });
 
    // Add event listener to where to watch tabs
-   document.querySelectorAll("#where-to-watch-tabs a").forEach(tab => {
+   const whereTabs = document.querySelectorAll("#where-to-watch-tabs a");
+   whereTabs.forEach(tab => {
       const target = tab.getAttribute('target');
       switch (target) {
          case 'buy':
@@ -117,5 +138,20 @@ window.addEventListener('load', function () {
          default:
             break;
       }
-   })
+   });
+
+   // Ensure tabindex=0 is always set after tab change (Bootstrap may remove it)
+   document.getElementById('where-to-watch-tabs').addEventListener('shown.bs.tab', function () {
+      whereTabs.forEach(tab => { if (tab.classList.contains('active')) { tab.setAttribute('tabindex', '0'); } });
+   });
+
+   // Add event listener to search settings modal close
+   document.getElementById('searchSettings').addEventListener('hidden.bs.modal', () => {
+      document.querySelector("button#search-settings-btn").focus();
+   });
+
+   // Add event listener to when show data modal is closed
+   document.querySelector("#showData").addEventListener('hidden.bs.modal', () => {
+      document.getElementById(document.querySelector("#showData").getAttribute("target-card-id")).focus();
+   });
 });
