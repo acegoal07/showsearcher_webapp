@@ -8,14 +8,16 @@ class SearchSettings {
    }
 }
 
-const searchSettings = new SearchSettings();
+export const searchSettings = new SearchSettings();
+window.searchSettings = searchSettings;
 
-const tabTriggerList = {
+export const tabTriggerList = {
    buy: null,
    rent: null,
    stream: null,
    freeStream: null
-}
+};
+window.tabTriggerList = tabTriggerList;
 
 // Add event listener to the load event
 window.addEventListener('load', function () {
@@ -55,7 +57,7 @@ window.addEventListener('load', function () {
    const showTypeButtons = document.querySelectorAll("#show-type-switch button");
    showTypeButtons.forEach((button, idx) => {
       button.addEventListener('click', () => {
-         updateShowTypeTab(idx);
+         updateShowTypeTab(button, idx);
       });
       showTypeButtons.forEach((button, idx) => {
          button.addEventListener('keydown', (event) => {
@@ -71,6 +73,7 @@ window.addEventListener('load', function () {
    });
 
    function updateShowTypeTab(button, activeIdx) {
+      console.log(button);
       if (button.idx === activeIdx && button.classList.contains('active')) { return; }
       const showType = showTypeButtons[activeIdx].getAttribute('show-type') == 'movies' ? 0 : 1;
       if (searchSettings.movieOrTv == showType) { return; }
@@ -153,5 +156,27 @@ window.addEventListener('load', function () {
    // Add event listener to when show data modal is closed
    document.querySelector("#showData").addEventListener('hidden.bs.modal', () => {
       document.getElementById(document.querySelector("#showData").getAttribute("target-card-id")).focus();
+   });
+
+   // Initialize Swiper for similar shows
+   const swiper = new Swiper('.swiper', {
+      slidesPerView: 1,
+      breakpoints: {
+         768: {
+            slidesPerView: 2,
+            spaceBetween: 20
+         },
+         1024: {
+            slidesPerView: 3,
+            spaceBetween: 30
+         }
+      },
+      spaceBetween: 30,
+      slidesPerGroup: 1,
+      loop: false,
+      navigation: {
+         nextEl: '.swiper-button-next',
+         prevEl: '.swiper-button-prev'
+      }
    });
 });

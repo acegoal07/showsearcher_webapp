@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "swiper": "^11.2.10"
+  },
+  "devDependencies": {
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1"
+  },
+  "scripts": {
+    "build-js": "webpack --mode production",
+    "pull-css": "xcopy node_modules\\swiper\\swiper-bundle.min.css assets\\css\\swiper-min.css /Y /I /F",
+    "build": "npm run build-js && npm run pull-css"
+  }
+}
