@@ -146,10 +146,10 @@ export function search(myInput) {
                         let slidesHTML = '';
                         similarShows.forEach(show => {
                            slidesHTML += `
-                                             <div tabindex="0" id="${show.id}" class="card bg-body-tertiary justify-content-center h-100 border-0 clickable swiper-slide mt-auto mb-auto">
-                                                <img class="card-img" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title || show.name}">
-                                             </div>
-                                          `;
+                              <div tabindex="0" id="${show.id}" class="card bg-body-tertiary justify-content-center h-100 border-0 clickable swiper-slide mt-auto mb-auto">
+                                 <img class="card-img" src="https://image.tmdb.org/t/p/w400${show.poster_path}" alt="${show.title || show.name}">
+                              </div>
+                           `;
                         });
                         swiperWrapper.innerHTML = slidesHTML;
                      } else {
