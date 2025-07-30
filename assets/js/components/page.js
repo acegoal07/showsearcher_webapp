@@ -5,6 +5,7 @@ class SearchSettings {
       this.adultContent = false;
       this.region = 'GB';
       this.movieOrTv = 0;
+      this.infoOnCover = false;
    }
 }
 
@@ -27,7 +28,7 @@ window.addEventListener('load', function () {
 
    // Add event listener to adult items settings
    document.querySelector("#adult-items-settings").addEventListener('change', () => {
-      searchSettings.adultContent = document.querySelector("#adult-items-settings").value;
+      searchSettings.adultContent = document.querySelector("#adult-items-settings").value === "true";
       search(myInput.value.trim());
    });
 
@@ -36,6 +37,12 @@ window.addEventListener('load', function () {
    document.querySelector("#region-settings").value = searchSettings.region;
    document.querySelector("#region-settings").addEventListener('change', () => {
       searchSettings.region = document.querySelector("#region-settings").value;
+   });
+
+   // Add event listener to info on cover settings
+   document.querySelector("#info-on-cover").addEventListener('change', () => {
+      searchSettings.infoOnCover = document.querySelector("#info-on-cover").value === "true";
+      search(myInput.value.trim());
    });
 
    // Add event listener to reset settings button
@@ -153,11 +160,6 @@ window.addEventListener('load', function () {
       document.querySelector("button#search-settings-btn").focus();
    });
 
-   // Add event listener to when show data modal is closed
-   document.querySelector("#showData").addEventListener('hidden.bs.modal', () => {
-      document.getElementById(document.querySelector("#showData").getAttribute("target-card-id")).focus();
-   });
-
    // Initialize Swiper for similar shows
    const swiper = new Swiper('.swiper', {
       slidesPerView: 1,
@@ -177,6 +179,26 @@ window.addEventListener('load', function () {
       navigation: {
          nextEl: '.swiper-button-next',
          prevEl: '.swiper-button-prev'
+      },
+      pagination: {
+         el: ".swiper-pagination",
+         clickable: true
+      },
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      coverflowEffect: {
+         rotate: 50,
+         stretch: 0,
+         depth: 100,
+         modifier: 1,
+         slideShadows: true
       }
+   });
+
+   // Add event listener to when show data modal is closed
+   document.querySelector("#showData").addEventListener('hidden.bs.modal', () => {
+      swiper.setProgress(0, 0);
+      document.getElementById(document.querySelector("#showData").getAttribute("target-card-id")).focus();
    });
 });

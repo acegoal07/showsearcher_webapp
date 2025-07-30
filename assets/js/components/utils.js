@@ -6,6 +6,8 @@ export function resetSettings() {
    document.querySelector("#adult-items-settings").value = false;
    searchSettings.region = getRegion();
    document.querySelector("#region-settings").value = searchSettings.region;
+   searchSettings.infoOnCover = false;
+   document.querySelector("#info-on-cover").value = false;
 }
 window.resetSettings = resetSettings;
 

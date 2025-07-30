@@ -40,18 +40,65 @@ export function search(myInput) {
             const cardDiv = document.createElement('div');
             cardDiv.setAttribute('tabindex', '0');
             cardDiv.id = `${showData.id}`;
-            cardDiv.classList.add('card', 'bg-body-tertiary', 'justify-content-center', 'h-100', 'shadow-lg', 'border-0', 'clickable');
+            cardDiv.classList.add('card', 'bg-body-tertiary', 'justify-content-center', 'h-100', 'shadow-lg', 'border-0', 'cursor-pointer');
+            cardDiv.setAttribute('role', 'button');
             colDiv.appendChild(cardDiv);
 
             if (showData.poster_path) {
                const img = document.createElement('img');
                img.classList.add('card-img');
-               img.src = `https://image.tmdb.org/t/p/w500${showData.poster_path}`
+               img.src = `https://image.tmdb.org/t/p/w500${showData.poster_path}`;
                img.alt = showData.title || showData.name || showData.original_title || showData.original_name;
-               cardDiv.appendChild(img);
+
+               if (searchSettings.infoOnCover) {
+                  const overlayDiv = document.createElement('div');
+                  overlayDiv.classList.add('position-absolute', 'top-0', 'start-0', 'end-0', 'bottom-0', 'd-flex', 'align-items-center', 'justify-content-center', 'text-white');
+                  overlayDiv.style.background = 'rgba(0, 0, 0, 0.5)';
+                  overlayDiv.style.backdropFilter = 'blur(3px)';
+
+                  const textDiv = document.createElement('div');
+                  textDiv.classList.add('d-flex', 'flex-column', 'align-items-center', 'p-2');
+
+                  const titleText = document.createElement('div');
+                  titleText.classList.add('fw-bold', 'fs-5', 'pb-1');
+                  titleText.textContent = showData.title || showData.name || showData.original_title || showData.original_name;
+                  textDiv.appendChild(titleText);
+
+                  const yearText = document.createElement('div');
+                  yearText.classList.add('fs-6', 'text-muted', 'pb-1');
+                  yearText.textContent = convertDate(showData.release_date || showData.first_air_date);
+                  textDiv.appendChild(yearText);
+
+                  const OverviewText = document.createElement('div');
+                  OverviewText.classList.add('fs-6', 'text-muted');
+                  if (showData.overview) {
+                     OverviewText.textContent = `${showData.overview.substring(0, 150)} ...`;
+                  } else {
+                     OverviewText.textContent = 'No overview available';
+                  }
+                  textDiv.appendChild(OverviewText);
+
+                  const ShowMoreText = document.createElement('div');
+                  ShowMoreText.classList.add('fs-6', 'text-muted', 'fw-bold', 'pt-1');
+                  ShowMoreText.textContent = 'Click to see more';
+                  textDiv.appendChild(ShowMoreText);
+
+                  overlayDiv.appendChild(textDiv);
+
+                  cardDiv.appendChild(overlayDiv);
+
+                  const overlayContainer = document.createElement('div');
+                  overlayContainer.classList.add('position-relative', 'text-center');
+
+                  overlayContainer.appendChild(img);
+                  overlayContainer.appendChild(overlayDiv);
+                  cardDiv.appendChild(overlayContainer);
+               } else {
+                  cardDiv.appendChild(img);
+               }
             } else {
                const fillerImgDiv = document.createElement('div');
-               fillerImgDiv.classList.add('placeholder-card-img');
+               fillerImgDiv.classList.add('d-flex', 'justify-content-center', 'align-items-center', 'text-center');
 
                const img = document.createElement('img');
                img.classList.add('card-img');
@@ -60,7 +107,7 @@ export function search(myInput) {
                fillerImgDiv.appendChild(img);
 
                const fillerImgText = document.createElement('div');
-               fillerImgText.classList.add('placeholder-card-img-text');
+               fillerImgText.classList.add('position-absolute', 'p-2');
 
                const fillerImgTextName = document.createElement('div');
                fillerImgTextName.classList.add('fw-bold', 'fs-5', 'pb-1');
@@ -146,8 +193,8 @@ export function search(myInput) {
                         let slidesHTML = '';
                         similarShows.forEach(show => {
                            slidesHTML += `
-                              <div tabindex="0" id="${show.id}" class="card bg-body-tertiary justify-content-center h-100 border-0 clickable swiper-slide mt-auto mb-auto">
-                                 <img class="card-img" src="https://image.tmdb.org/t/p/w400${show.poster_path}" alt="${show.title || show.name}">
+                              <div tabindex="0" id="${show.id}" class="justify-content-center h-100 border-0 swiper-slide mt-auto mb-auto">
+                                 <img class="card-img rounded" src="https://image.tmdb.org/t/p/w400${show.poster_path}" alt="${show.title || show.name}">
                               </div>
                            `;
                         });

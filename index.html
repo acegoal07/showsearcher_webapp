@@ -110,7 +110,7 @@
             data-bs-target="#searchSettings" aria-label="search settings" id="search-settings-btn"></button>
       </div>
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 justify-content-center"
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 justify-content-center"
          id="search-results"></div>
       <h2 id="no-result-error" class="text-center pt-5 pb-5 d-none">No results found</h2>
       <div class="d-flex justify-content-center mt-5 pt-5 mb-5 pb-5 d-none" id="loading-spinner">
@@ -156,14 +156,14 @@
             <div class="modal-body">
                <div class="input-group">
                   <label class="input-group-text" for="adult-items-settings">Adult items</label>
-                  <select class="form-select clickable" id="adult-items-settings">
+                  <select class="form-select cursor-pointer" id="adult-items-settings">
                      <option value="false" selected>No</option>
                      <option value="true">Yes</option>
                   </select>
                </div>
                <div class="input-group mt-3">
                   <label class="input-group-text" for="region-settings">Region</label>
-                  <select class="form-select clickable" id="region-settings">
+                  <select class="form-select cursor-pointer" id="region-settings">
                      <option value="AD">AD</option>
                      <option value="AE">AE</option>
                      <option value="AG">AG</option>
@@ -305,6 +305,13 @@
                      <option value="ZW">ZW</option>
                   </select>
                </div>
+               <div class="input-group mt-3">
+                  <label class="input-group-text" for="info-on-cover">Info on cover</label>
+                  <select class="form-select cursor-pointer" id="info-on-cover">
+                     <option value="false" selected>No</option>
+                     <option value="true">Yes</option>
+                  </select>
+               </div>
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-danger" id="reset-settings">Reset</button>
@@ -344,6 +351,7 @@
                      <div class="swiper-wrapper"></div>
                      <div class="swiper-button-next"></div>
                      <div class="swiper-button-prev"></div>
+                     <div class="swiper-pagination"></div>
                   </div>
                </div>
                <div id="where-to-watch">
