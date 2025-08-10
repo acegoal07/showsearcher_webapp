@@ -17,7 +17,10 @@
 </head>
 
 <body class="min-vh-100 d-flex flex-column bg-dark-subtle">
+   <!-- Skip to main content -->
    <a href="#main-content" class="skip-to-main-content btn btn-primary">Skip to main content</a>
+
+   <!-- Nav -->
    <nav class="navbar sticky-top navbar-expand-md bg-body-tertiary pb-3" aria-label="Main navigation" role="navigation">
       <div class="container">
          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
@@ -86,6 +89,7 @@
       </div>
    </nav>
 
+   <!-- Header -->
    <header class="container" role="banner">
       <div class="p-5 mt-3 mb-3 bg-body-tertiary rounded-3 shadow">
          <h1 class="display-5 fw-bold">ShowSearcher</h1>
@@ -93,7 +97,9 @@
       </div>
    </header>
 
+   <!-- Main -->
    <main class="container flex-grow-1" role="main" id="main-content">
+      <!-- Show type switcher -->
       <div class="card bg-body-tertiary p-3 border-0 shadow mb-3">
          <div class="nav nav-pills flex-column flex-sm-row nav-justified gap-3" id="show-type-switch" role="tablist">
             <button class="nav-link border border-primary active" type="button" data-bs-toggle="tab" show-type="movies"
@@ -103,6 +109,7 @@
          </div>
       </div>
 
+      <!-- Search bar and settings button -->
       <div class="input-group input-group-lg pb-3">
          <input type="text" class="form-control bg-body-tertiary border-0 shadow" aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-lg" placeholder="Search" aria-placeholder="Search" id="search-input">
@@ -110,12 +117,17 @@
             data-bs-target="#searchSettings" aria-label="search settings" id="search-settings-btn"></button>
       </div>
 
+      <!-- Search Results/No results found -->
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 justify-content-center"
          id="search-results"></div>
       <h2 id="no-result-error" class="text-center pt-5 pb-5 d-none">No results found</h2>
+
+      <!-- Loading icon -->
       <div class="d-flex justify-content-center mt-5 pt-5 mb-5 pb-5 d-none" id="loading-spinner">
          <div class="spinner-border"></div>
       </div>
+
+      <!-- Pagination -->
       <div aria-label="Result pagination buttons" class="pt-3 d-none" id="pagination-btns">
          <div class="fw-bold w-100 text-center mb-2">
             <p id="current-page-number" class="d-inline"></p>
@@ -137,6 +149,7 @@
       </div>
    </main>
 
+   <!-- Footer -->
    <footer class="container text-center" aria-label="Footer">
       <hr>
       <button type="button" class="btn btn-primary mt-1" id="to-top-button" aria-label="Scroll to top of page">To the
@@ -145,6 +158,7 @@
             target="_blank" rel="noopener">Bootstrap</a>, by acegoal07</p>
    </footer>
 
+   <!-- Search Settings Modal -->
    <div class="modal fade backdrop-filter-blur" id="searchSettings" data-bs-backdrop="static" data-bs-keyboard="true"
       tabindex="-1" aria-labelledby="searchSettingsLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -321,6 +335,7 @@
       </div>
    </div>
 
+   <!-- Show Data Modal -->
    <div class="modal fade backdrop-filter-blur" id="showData" data-bs-backdrop="static" data-bs-keyboard="true"
       tabindex="-1" aria-labelledby="showDataLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">

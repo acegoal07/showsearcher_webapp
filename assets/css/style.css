@@ -4,6 +4,13 @@
    backdrop-filter: blur(100px);
 }
 
+/* overlay background */
+.overlay-background {
+   background: rgba(0, 0, 0, 0.5);
+   -webkit-backdrop-filter: blur(3px);
+   backdrop-filter: blur(3px);
+}
+
 /* Clickable */
 .cursor-pointer {
    cursor: pointer !important;
