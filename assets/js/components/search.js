@@ -53,12 +53,14 @@ export function search(myInput) {
             img.alt = showData.title || showData.name || showData.original_title || showData.original_name;
 
             const overlayDiv = document.createElement('div');
-            overlayDiv.classList.add('position-absolute', 'top-0', 'start-0', 'end-0', 'bottom-0', 'd-flex', 'align-items-center', 'justify-content-center', 'text-white', 'rounded');
+            overlayDiv.classList.add('position-absolute', 'top-0', 'start-0', 'end-0', 'bottom-0', 'd-flex', 'align-items-center', 'justify-content-center', 'text-white', 'rounded', 'overlay-background');
 
             if (!searchSettings.infoOnCover && !img.src.includes('FillerImage.webp')) {
                overlayDiv.classList.add('d-none');
             } else if (!img.src.includes('FillerImage.webp')) {
                overlayDiv.classList.add('overlay-background');
+            } else {
+               overlayDiv.classList.remove('overlay-background');
             }
 
             const textDiv = document.createElement('div');
@@ -126,13 +128,14 @@ window.search = search;
 export function handleShowSelection(showData) {
    // Checks if the information for the selected show is already being displayed and if so, shows the modal and does not fetch the data again
    const modal = document.querySelector("#showData");
-   if (modal.getAttribute("target-card-id") === showData.id.toString()) {
+   if (modal.getAttribute("target-card-id") === showData.id.toString() && modal.getAttribute("data-region") === searchSettings.region) {
       $("#showData").modal("show");
       return;
    }
 
    // Stores the ID of the selected show in the modal to prevent unnecessary API calls
    modal.setAttribute("target-card-id", showData.id);
+   modal.setAttribute("data-region", searchSettings.region);
 
    // Display the shows title, release date, and description
    document.querySelector("#show-title").textContent = showData.title || showData.name || showData.original_title || showData.original_name;

@@ -42,7 +42,24 @@ window.addEventListener('load', function () {
    // Add event listener to info on cover settings
    document.querySelector("#info-on-cover").addEventListener('change', () => {
       searchSettings.infoOnCover = document.querySelector("#info-on-cover").value === "true";
-      search(myInput.value.trim());
+      Array.from(this.document.querySelector("#search-results").children).forEach(child => {
+         const item = child.querySelector(".overlay-background");
+         if (child.querySelector("img").src.includes('FillerImage.webp')) { return; }
+         if (searchSettings.infoOnCover) {
+            item.classList.remove("d-none");
+         } else {
+            item.classList.add("d-none");
+         }
+      });
+      Array.from(document.querySelectorAll(".swiper-slide")).forEach(slide => {
+         const item = slide.querySelector(".overlay-background");
+         if (slide.querySelector("img").src.includes('FillerImage.webp')) { return; }
+         if (searchSettings.infoOnCover) {
+            item.classList.remove("d-none");
+         } else {
+            item.classList.add("d-none");
+         }
+      });
    });
 
    // Add event listener to reset settings button
