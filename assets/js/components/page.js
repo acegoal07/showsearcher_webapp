@@ -4,6 +4,7 @@ class SearchSettings {
       this.maxPage = 1;
       this.adultContent = false;
       this.region = 'GB';
+      this.language = 'EN';
       this.movieOrTv = 0;
       this.infoOnCover = false;
    }
@@ -22,6 +23,7 @@ window.tabTriggerList = tabTriggerList;
 
 // Add event listener to the load event
 window.addEventListener('load', function () {
+   searchSettings.language = this.navigator.language.split('-')[0].toUpperCase() || 'EN';
    const myInput = document.querySelector("#search-input");
    myInput.value = null;
    resetSettings();
@@ -37,6 +39,7 @@ window.addEventListener('load', function () {
    document.querySelector("#region-settings").value = searchSettings.region;
    document.querySelector("#region-settings").addEventListener('change', () => {
       searchSettings.region = document.querySelector("#region-settings").value;
+      search(myInput.value.trim());
    });
 
    // Add event listener to info on cover settings

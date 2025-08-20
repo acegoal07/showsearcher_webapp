@@ -20,7 +20,7 @@ export function search(myInput) {
    document.querySelector("input#search-input").setAttribute("previous-search", myInput);
 
    // Set API request to TMDB based on the user's search input and settings
-   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}`, fetchSettings)
+   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}&region=${searchSettings.region}&language=${searchSettings.language}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}&region=${searchSettings.region}&language=${searchSettings.language}`, fetchSettings)
       .then(res => {
          if (!res.ok) { throw new Error('Network response was not ok'); }
          else { return res.json(); }
@@ -143,7 +143,7 @@ export function handleShowSelection(showData) {
    document.querySelector("#show-description").textContent = showData.overview || 'No overview available';
 
    // Retrieve and display the genres of the show
-   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/genre/movie/list?language=en` : `https://api.themoviedb.org/3/genre/tv/list?language=en`, fetchSettings)
+   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/genre/movie/list?language=${searchSettings.language}` : `https://api.themoviedb.org/3/genre/tv/list?language=${searchSettings.language}`, fetchSettings)
       .then(res => {
          if (!res.ok) { throw new Error('Network response was not ok'); }
          else { return res.json(); }
@@ -169,7 +169,7 @@ export function handleShowSelection(showData) {
    const similarShowsContainer = document.querySelector("#similar-shows");
    const swiperWrapper = similarShowsContainer.querySelector('.swiper-wrapper');
    swiperWrapper.innerHTML = '';
-   fetch(`https://api.themoviedb.org/3/tv/${showData.id}/similar?page=1`, fetchSettings)
+   fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/similar?page=1&region=${searchSettings.region}&language=${searchSettings.language}` : `https://api.themoviedb.org/3/tv/${showData.id}/similar?page=1&region=${searchSettings.region}&language=${searchSettings.language}`, fetchSettings)
       .then(res => {
          if (!res.ok) {
             return Promise.resolve([]);
