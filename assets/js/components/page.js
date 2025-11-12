@@ -11,7 +11,7 @@ class SearchSettings {
 }
 
 export const searchSettings = new SearchSettings();
-window.searchSettings = searchSettings;
+globalThis.searchSettings = searchSettings;
 
 export const tabTriggerList = {
    buy: null,
@@ -19,7 +19,7 @@ export const tabTriggerList = {
    stream: null,
    freeStream: null
 };
-window.tabTriggerList = tabTriggerList;
+globalThis.tabTriggerList = tabTriggerList;
 
 // Add event listener to the load event
 window.addEventListener('load', function () {
@@ -45,7 +45,7 @@ window.addEventListener('load', function () {
    // Add event listener to info on cover settings
    document.querySelector("#info-on-cover").addEventListener('change', () => {
       searchSettings.infoOnCover = document.querySelector("#info-on-cover").value === "true";
-      Array.from(this.document.querySelector("#search-results").children).forEach(child => {
+      for (const child of Array.from(document.querySelector("#search-results").children)) {
          const item = child.querySelector(".overlay-background");
          if (child.querySelector("img").src.includes('FillerImage.webp')) { return; }
          if (searchSettings.infoOnCover) {
@@ -53,8 +53,8 @@ window.addEventListener('load', function () {
          } else {
             item.classList.add("d-none");
          }
-      });
-      Array.from(document.querySelectorAll(".swiper-slide")).forEach(slide => {
+      }
+      for (const slide of Array.from(document.querySelectorAll(".swiper-slide"))) {
          const item = slide.querySelector(".overlay-background");
          if (slide.querySelector("img").src.includes('FillerImage.webp')) { return; }
          if (searchSettings.infoOnCover) {
@@ -62,7 +62,7 @@ window.addEventListener('load', function () {
          } else {
             item.classList.add("d-none");
          }
-      });
+      }
    });
 
    // Add event listener to reset settings button
@@ -82,11 +82,11 @@ window.addEventListener('load', function () {
 
    // Add event listener to switch show type buttons and keyboard navigation
    const showTypeButtons = document.querySelectorAll("#show-type-switch button");
-   showTypeButtons.forEach((button, idx) => {
+   for (const [idx, button] of showTypeButtons.entries()) {
       button.addEventListener('click', () => {
          updateShowTypeTab(button, idx);
       });
-      showTypeButtons.forEach((button, idx) => {
+      for (const [idx, button] of showTypeButtons.entries()) {
          button.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
                const nextIdx = idx === 0 ? 1 : 0;
@@ -96,8 +96,8 @@ window.addEventListener('load', function () {
                updateShowTypeTab(button, prevIdx);
             }
          });
-      });
-   });
+      }
+   }
 
    function updateShowTypeTab(button, activeIdx) {
       console.log(button);
@@ -134,7 +134,7 @@ window.addEventListener('load', function () {
 
    // Add event listener to where to watch tabs
    const whereTabs = document.querySelectorAll("#where-to-watch-tabs a");
-   whereTabs.forEach(tab => {
+   for (const tab of whereTabs) {
       const target = tab.getAttribute('target');
       switch (target) {
          case 'buy':
@@ -168,11 +168,11 @@ window.addEventListener('load', function () {
          default:
             break;
       }
-   });
+   }
 
    // Ensure tabindex=0 is always set after tab change (Bootstrap may remove it)
    document.getElementById('where-to-watch-tabs').addEventListener('shown.bs.tab', function () {
-      whereTabs.forEach(tab => { if (tab.classList.contains('active')) { tab.setAttribute('tabindex', '0'); } });
+      for (const tab of whereTabs) { if (tab.classList.contains('active')) { tab.setAttribute('tabindex', '0'); } }
    });
 
    // Add event listener to search settings modal close

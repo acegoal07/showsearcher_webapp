@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "swiper": "^11.2.10"
+    "swiper": "^12.0.3"
   },
   "devDependencies": {
     "terser-webpack-plugin": "^5.3.14",

@@ -6,11 +6,11 @@ export function resetSettings() {
    document.querySelector("#adult-items-settings").value = false;
    searchSettings.region = getRegion();
    document.querySelector("#region-settings").value = searchSettings.region;
-   document.querySelector("#showData").setAttribute("data-region", searchSettings.region);
+   document.querySelector("#showData").dataset.region = searchSettings.region;
    searchSettings.infoOnCover = false;
    document.querySelector("#info-on-cover").value = false;
 }
-window.resetSettings = resetSettings;
+globalThis.resetSettings = resetSettings;
 
 /**
  * Returns the region of the user
@@ -22,7 +22,7 @@ export function getRegion() {
    if (!re.test(region)) { return 'GB'; }
    return re.exec(region)[5];
 }
-window.getRegion = getRegion;
+globalThis.getRegion = getRegion;
 
 /**
  * Converts the date to a readable format
@@ -34,4 +34,4 @@ export function convertDate(date) {
    if (dateObj == 'Invalid Date') { return 'No release date available'; }
    return dateObj.toLocaleDateString(new Intl.DateTimeFormat(navigator.language).resolvedOptions().locale);
 }
-window.convertDate = convertDate;
+globalThis.convertDate = convertDate;

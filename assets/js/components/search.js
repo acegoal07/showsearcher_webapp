@@ -22,8 +22,8 @@ export function search(myInput) {
    // Set API request to TMDB based on the user's search input and settings
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/search/movie?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}&region=${searchSettings.region}&language=${searchSettings.language}` : `https://api.themoviedb.org/3/search/tv?query=${myInput}&include_adult=${searchSettings.adultContent}&page=${searchSettings.page}&region=${searchSettings.region}&language=${searchSettings.language}`, fetchSettings)
       .then(res => {
-         if (!res.ok) { throw new Error('Network response was not ok'); }
-         else { return res.json(); }
+         if (res.ok) { return res.json(); }
+         else { throw new Error('Network response was not ok'); }
       })
       .then(searchData => {
          const searchResults = document.querySelector("#search-results");
@@ -35,7 +35,7 @@ export function search(myInput) {
             document.querySelector("#pagination-btns").classList.remove('d-none');
          }
 
-         searchData.results.forEach(showData => {
+         for (const showData of searchData.results) {
             // Create the card for each show or movie
             const colDiv = document.createElement('div');
             colDiv.classList.add('col');
@@ -109,7 +109,7 @@ export function search(myInput) {
             });
 
             searchResults.appendChild(colDiv);
-         });
+         }
 
          if (searchData.results.length == 0 && document.querySelector("#no-result-error").classList.contains('d-none')) {
             document.querySelector("#no-result-error").classList.remove('d-none');
@@ -145,8 +145,8 @@ export function handleShowSelection(showData) {
    // Retrieve and display the genres of the show
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/genre/movie/list?language=${searchSettings.language}` : `https://api.themoviedb.org/3/genre/tv/list?language=${searchSettings.language}`, fetchSettings)
       .then(res => {
-         if (!res.ok) { throw new Error('Network response was not ok'); }
-         else { return res.json(); }
+         if (res.ok) { return res.json(); }
+         else { throw new Error('Network response was not ok'); }
       })
       .then(genreData => {
          const genres = [];
@@ -171,10 +171,11 @@ export function handleShowSelection(showData) {
    swiperWrapper.innerHTML = '';
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/similar?page=1&region=${searchSettings.region}&language=${searchSettings.language}` : `https://api.themoviedb.org/3/tv/${showData.id}/similar?page=1&region=${searchSettings.region}&language=${searchSettings.language}`, fetchSettings)
       .then(res => {
-         if (!res.ok) {
-            return Promise.resolve([]);
-         } else {
+         if (res.ok) {
             return res.json();
+         } else {
+            console.error("Error fetching similar shows: Network response was not ok");
+            return { results: [] };
          }
       })
       .then(similarData => {
@@ -182,7 +183,7 @@ export function handleShowSelection(showData) {
          const similarShowsContainer = document.querySelector("#similar-shows");
          if (similarData.results && similarData.results.length > 0) {
             similarShowsContainer.classList.remove('d-none');
-            similarShows.forEach(show => {
+            for (const show of similarShows) {
                const swiperDiv = document.createElement('div');
                swiperDiv.classList.add('justify-content-center', 'h-100', 'border-0', 'swiper-slide', 'mt-auto', 'mb-auto', 'rounded');
                swiperDiv.setAttribute('tabindex', '0');
@@ -233,7 +234,7 @@ export function handleShowSelection(showData) {
                overlayContainer.appendChild(overlayDiv);
                swiperDiv.appendChild(overlayContainer);
                swiperWrapper.appendChild(swiperDiv);
-            });
+            }
          } else {
             similarShowsContainer.classList.add('d-none');
          }
@@ -247,33 +248,29 @@ export function handleShowSelection(showData) {
    whereToWatchDiv.classList.add("d-none");
 
    const buyTab = document.querySelector("#buy-tab");
-   buyTab.classList.add("d-none");
-   buyTab.classList.add("disabled");
+   buyTab.classList.add("d-none", "disabled");
    const buyOutputDiv = document.querySelector("#buy-output");
    buyOutputDiv.innerHTML = '';
 
    const rentTab = document.querySelector("#rent-tab");
-   rentTab.classList.add("d-none");
-   rentTab.classList.add("disabled");
+   rentTab.classList.add("d-none", "disabled");
    const rentOutputDiv = document.querySelector("#rent-output");
    rentOutputDiv.innerHTML = '';
 
    const streamTab = document.querySelector("#stream-tab");
-   streamTab.classList.add("d-none");
-   streamTab.classList.add("disabled");
+   streamTab.classList.add("d-none", "disabled");
    const streamOutputDiv = document.querySelector("#stream-output");
    streamOutputDiv.innerHTML = '';
 
    const freeStreamTab = document.querySelector("#free-stream-tab");
-   freeStreamTab.classList.add("d-none");
-   freeStreamTab.classList.add("disabled");
+   freeStreamTab.classList.add("d-none", "disabled");
    const freeStreamOutputDiv = document.querySelector("#free-stream-output");
    freeStreamOutputDiv.innerHTML = '';
 
    fetch(searchSettings.movieOrTv == 0 ? `https://api.themoviedb.org/3/movie/${showData.id}/watch/providers` : `https://api.themoviedb.org/3/tv/${showData.id}/watch/providers`, fetchSettings)
       .then(res => {
-         if (!res.ok) { throw new Error('Network response was not ok'); }
-         else { return res.json(); }
+         if (res.ok) { return res.json(); }
+         else { throw new Error('Network response was not ok'); }
       })
       .then(providerData => {
          const regionProviderData = providerData.results[searchSettings.region];
