@@ -57,10 +57,10 @@ export function search(myInput) {
 
             if (!searchSettings.infoOnCover && !img.src.includes('FillerImage.webp')) {
                overlayDiv.classList.add('d-none');
-            } else if (!img.src.includes('FillerImage.webp')) {
-               overlayDiv.classList.add('overlay-background');
-            } else {
+            } else if (img.src.includes('FillerImage.webp')) {
                overlayDiv.classList.remove('overlay-background');
+            } else {
+               overlayDiv.classList.add('overlay-background');
             }
 
             const textDiv = document.createElement('div');
@@ -119,7 +119,7 @@ export function search(myInput) {
 
       }).catch(err => console.error('error:' + err));
 }
-window.search = search;
+globalThis.search = search;
 
 /**
  * Handles the selection of a show or movie from the search results and displays its details
@@ -128,14 +128,15 @@ window.search = search;
 export function handleShowSelection(showData) {
    // Checks if the information for the selected show is already being displayed and if so, shows the modal and does not fetch the data again
    const modal = document.querySelector("#showData");
-   if (modal.getAttribute("target-card-id") === showData.id.toString() && modal.getAttribute("data-region") === searchSettings.region) {
+   if (modal.getAttribute("target-card-id") === showData.id.toString() && modal.dataset.region === searchSettings.region && modal.dataset.language === searchSettings.language) {
       $("#showData").modal("show");
       return;
    }
 
    // Stores the ID of the selected show in the modal to prevent unnecessary API calls
    modal.setAttribute("target-card-id", showData.id);
-   modal.setAttribute("data-region", searchSettings.region);
+   modal.dataset.region = searchSettings.region;
+   modal.dataset.language = searchSettings.language;
 
    // Display the shows title, release date, and description
    document.querySelector("#show-title").textContent = showData.title || showData.name || showData.original_title || showData.original_name;
@@ -163,7 +164,7 @@ export function handleShowSelection(showData) {
       });
 
    // Display the shows rating
-   document.querySelector("#show-rating").textContent = parseFloat(showData.vote_average).toFixed(1) || 'No rating available';
+   document.querySelector("#show-rating").textContent = Number.parseFloat(showData.vote_average).toFixed(1) || 'No rating available';
 
    // Retrieve and display similar shows
    const similarShowsContainer = document.querySelector("#similar-shows");
@@ -293,8 +294,7 @@ export function handleShowSelection(showData) {
                   itemContainer.appendChild(name);
                   buyOutputDiv.appendChild(itemContainer);
                }
-               buyTab.classList.remove("d-none");
-               buyTab.classList.remove("disabled");
+               buyTab.classList.remove("d-none", "disabled");
                availableSections.buy = true;
             }
 
@@ -308,8 +308,7 @@ export function handleShowSelection(showData) {
                   itemContainer.appendChild(name);
                   rentOutputDiv.appendChild(itemContainer);
                }
-               rentTab.classList.remove("d-none");
-               rentTab.classList.remove("disabled");
+               rentTab.classList.remove("d-none", "disabled");
                availableSections.rent = true;
             }
 
@@ -323,8 +322,7 @@ export function handleShowSelection(showData) {
                   itemContainer.appendChild(name);
                   streamOutputDiv.appendChild(itemContainer);
                }
-               streamTab.classList.remove("d-none");
-               streamTab.classList.remove("disabled");
+               streamTab.classList.remove("d-none", "disabled");
                availableSections.stream = true;
             }
 
@@ -338,8 +336,7 @@ export function handleShowSelection(showData) {
                   itemContainer.appendChild(name);
                   freeStreamOutputDiv.appendChild(itemContainer);
                }
-               freeStreamTab.classList.remove("d-none");
-               freeStreamTab.classList.remove("disabled");
+               freeStreamTab.classList.remove("d-none", "disabled");
                availableSections.freeStream = true;
             }
 

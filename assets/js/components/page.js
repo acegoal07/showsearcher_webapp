@@ -36,9 +36,19 @@ window.addEventListener('load', function () {
 
    // Add event listener to region settings
    searchSettings.region = getRegion();
-   document.querySelector("#region-settings").value = searchSettings.region;
-   document.querySelector("#region-settings").addEventListener('change', () => {
-      searchSettings.region = document.querySelector("#region-settings").value;
+   const regionSettings = document.querySelector("#region-settings");
+   regionSettings.value = searchSettings.region;
+   regionSettings.addEventListener('change', () => {
+      searchSettings.region = regionSettings.value;
+      search(myInput.value.trim());
+   });
+
+   // Add event listener to language settings
+   searchSettings.language = getLanguage();
+   const languageSettings = document.querySelector('#language-settings');
+   languageSettings.value = searchSettings.language;
+   languageSettings.addEventListener('change', () => {
+      searchSettings.language = languageSettings.value;
       search(myInput.value.trim());
    });
 
@@ -94,6 +104,8 @@ window.addEventListener('load', function () {
             } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
                const prevIdx = idx === 0 ? 1 : 0;
                updateShowTypeTab(button, prevIdx);
+            } else {
+               return;
             }
          });
       }

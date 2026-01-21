@@ -6,6 +6,8 @@ export function resetSettings() {
    document.querySelector("#adult-items-settings").value = false;
    searchSettings.region = getRegion();
    document.querySelector("#region-settings").value = searchSettings.region;
+   searchSettings.language = getLanguage();
+   document.querySelector("#language-settings").value = searchSettings.language;
    document.querySelector("#showData").dataset.region = searchSettings.region;
    searchSettings.infoOnCover = false;
    document.querySelector("#info-on-cover").value = false;
@@ -35,3 +37,12 @@ export function convertDate(date) {
    return dateObj.toLocaleDateString(new Intl.DateTimeFormat(navigator.language).resolvedOptions().locale);
 }
 globalThis.convertDate = convertDate;
+
+/**
+ * Returns the language of the user
+ * @returns {String}
+ */
+export function getLanguage() {
+   return navigator.language;
+}
+globalThis.getLanguage = getLanguage;
